@@ -1,0 +1,172 @@
+### Health Check
+GET http://localhost:3900/api/v1/health
+
+### ==================== User Routes ====================
+
+### Get All Users
+GET http://localhost:3900/api/v1/users
+
+### Get User by ID
+GET http://localhost:3900/api/v1/users/1
+
+### Create User
+POST http://localhost:3900/api/v1/users
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "name": "Test User"
+}
+
+### Update User
+PUT http://localhost:3900/api/v1/users/1
+Content-Type: application/json
+
+{
+    "name": "Updated User Name"
+}
+
+### Delete User
+DELETE http://localhost:3900/api/v1/users/1
+
+### ==================== Task Routes ====================
+
+### Get All Tasks
+GET http://localhost:3900/api/v1/tasks
+
+### Get Task by ID
+GET http://localhost:3900/api/v1/tasks/1
+
+### Create MEMO Task
+POST http://localhost:3900/api/v1/tasks
+Content-Type: application/json
+
+{
+    "title": "Team Meeting Summary",
+    "category": "MEMO",
+    "status": "INPROGRESS",
+    "keterangan": "Summary of weekly team sync meeting"
+}
+
+### Create TASK
+POST http://localhost:3900/api/v1/tasks
+Content-Type: application/json
+
+{
+    "title": "Implement New Feature",
+    "category": "TASK",
+    "status": "INPROGRESS",
+    "keterangan": "Add new authentication module"
+}
+
+### Create LAPORAN
+POST http://localhost:3900/api/v1/tasks
+Content-Type: application/json
+
+{
+    "title": "Monthly Progress Report",
+    "category": "LAPORAN",
+    "status": "INPROGRESS",
+    "keterangan": "Project progress report for January 2024"
+}
+
+### Get Tasks by Status (INPROGRESS)
+GET http://localhost:3900/api/v1/tasks/status/INPROGRESS
+
+### Get Tasks by Category (MEMO)
+GET http://localhost:3900/api/v1/tasks/category/MEMO
+
+### ==================== Acara Routes ====================
+
+### Get All Acara
+GET http://localhost:3900/api/v1/acara
+
+### Get Acara by ID
+GET http://localhost:3900/api/v1/acara/1
+
+### Create Acara
+POST http://localhost:3900/api/v1/acara
+Content-Type: application/json
+
+{
+    "title": "Monthly Team Meeting",
+    "dateTime": "2024-02-15T10:00:00Z",
+    "location": "Conference Room B",
+    "status": "UPCOMING",
+    "description": "Monthly team sync and planning session",
+    "category": "Meeting"
+}
+
+### Update Acara Status to DONE
+PUT http://localhost:3900/api/v1/acara/1
+Content-Type: application/json
+
+{
+    "status": "DONE",
+    "description": "Meeting completed successfully"
+}
+
+### Delete Acara
+DELETE http://localhost:3900/api/v1/acara/1
+
+### Get Acara by Status (UPCOMING)
+GET http://localhost:3900/api/v1/acara/status/UPCOMING
+
+### Get Upcoming Acara (Next 7 days)
+GET http://localhost:3900/api/v1/acara/upcoming/week
+
+### ==================== Report Routes ====================
+
+### Get All Reports
+GET http://localhost:3900/api/v1/report
+
+### Get Report by ID
+GET http://localhost:3900/api/v1/report/1
+
+### Create PM Report
+POST http://localhost:3900/api/v1/report
+Content-Type: application/json
+
+{
+    "evidence": "https://storage.example.com/evidence/maintenance-check.pdf",
+    "description": "Scheduled monthly server maintenance completed",
+    "pelapor": "Ahmad Teknisi",
+    "phone": "+62812-3456-7890",
+    "category": "PM"
+}
+
+### Create CM Report
+POST http://localhost:3900/api/v1/report
+Content-Type: application/json
+
+{
+    "evidence": "http://fwf.fwf/image.jpg",
+    "description": "Emergency network issue resolution",
+    "pelapor": "Budi Engineer",
+    "phone": "+62898-7654-3210",
+    "category": "CM"
+}
+
+### Update Report
+PUT http://localhost:3900/api/v1/report/1
+Content-Type: application/json
+
+{
+    "description": "Updated maintenance report with additional findings",
+    "phone": "+62812-3456-7891"
+}
+
+### Delete Report
+DELETE http://localhost:3900/api/v1/report/1
+
+### Get Reports by Category (PM)
+GET http://localhost:3900/api/v1/report/category/PM
+
+### Get Reports by Category (CM)
+GET http://localhost:3900/api/v1/report/category/CM
+
+### Get Reports by Pelapor
+GET http://localhost:3900/api/v1/report/pelapor/Ahmad%20Teknisi
+
+### Search Reports
+GET http://localhost:3900/api/v1/report/search?query=maintenance

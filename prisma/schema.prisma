@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum TaskStatus {
+  COMPLETED
+  CANCEL
+  INPROGRESS
+}
+
+enum TaskCategory {
+  MEMO
+  TASK
+  LAPORAN
+}
+
+model Task {
+  id         Int          @id @default(autoincrement())
+  title      String
+  category   TaskCategory @default(TASK)
+  status     TaskStatus   @default(INPROGRESS)
+  keterangan String?      @db.Text
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@map("tasks")
+}
+
+enum AcaraStatus {
+  UPCOMING
+  DONE
+  CANCEL
+}
+
+model Acara {
+  id          Int         @id @default(autoincrement())
+  title       String
+  dateTime    DateTime
+  location    String
+  status      AcaraStatus @default(UPCOMING)
+  description String?     @db.Text
+  category    String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("acara")
+}
+
+enum ReportCategory {
+  CM
+  PM
+}
+
+model TaskReport {
+  id          Int            @id @default(autoincrement())
+  evidence    String // URL or file path to the evidence
+  description String         @db.Text
+  pelapor     String
+  phone       String
+  category    ReportCategory
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("task_reports")
+}
