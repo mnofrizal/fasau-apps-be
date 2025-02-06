@@ -49,10 +49,10 @@ const reportController = {
       const { evidence, description, pelapor, phone, category } = req.body;
 
       // Validate required fields
-      if (!evidence || !description || !pelapor || !phone || !category) {
+      if (!description || !pelapor || !phone || !category) {
         return validationErrorResponse(
           res,
-          "Evidence, description, pelapor, phone, and category are required"
+          "Description, pelapor, phone, and category are required"
         );
       }
 
@@ -204,6 +204,23 @@ const reportController = {
         res,
         200,
         "Reports retrieved successfully",
+        reports
+      );
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  },
+
+  /**
+   * Get today's reports
+   */
+  getTodayReports: async (req, res) => {
+    try {
+      const reports = await reportService.getTodayReports();
+      return successResponse(
+        res,
+        200,
+        "Today's reports retrieved successfully",
         reports
       );
     } catch (error) {

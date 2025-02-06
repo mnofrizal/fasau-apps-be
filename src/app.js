@@ -2,19 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { createServer } = require("http");
-const { Server } = require("socket.io");
 const { PrismaClient } = require("@prisma/client");
+const socketUtils = require("./utils/socket");
 const routes = require("./routes");
 
 // Initialize express app
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*", // In production, replace with specific origins
-    methods: ["GET", "POST"],
-  },
-});
+
+// Initialize Socket.IO
+const io = socketUtils.init(httpServer);
 
 // Initialize Prisma
 const prisma = new PrismaClient();
@@ -33,15 +30,6 @@ app.get("/", (req, res) => {
     message: "Welcome to FASAU API",
     version: "1.0.0",
     docsUrl: "/api/v1/docs", // For future API documentation
-  });
-});
-
-// Socket.IO connection handler
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
   });
 });
 

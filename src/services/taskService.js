@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const socketUtils = require("../utils/socket");
 const prisma = new PrismaClient();
 
 const taskService = {
@@ -31,9 +32,11 @@ const taskService = {
    * @returns {Promise<Object>} Created task object
    */
   createTask: async (taskData) => {
-    return await prisma.task.create({
+    const task = await prisma.task.create({
       data: taskData,
     });
+    socketUtils.getIO().emit("task_updated"); // Emit event to refresh tasks
+    return task;
   },
 
   /**
@@ -43,10 +46,12 @@ const taskService = {
    * @returns {Promise<Object>} Updated task object
    */
   updateTask: async (id, taskData) => {
-    return await prisma.task.update({
+    const task = await prisma.task.update({
       where: { id },
       data: taskData,
     });
+    socketUtils.getIO().emit("task_updated"); // Emit event to refresh tasks after update
+    return task;
   },
 
   /**
@@ -55,9 +60,11 @@ const taskService = {
    * @returns {Promise<Object>} Deleted task object
    */
   deleteTask: async (id) => {
-    return await prisma.task.delete({
+    const task = await prisma.task.delete({
       where: { id },
     });
+    socketUtils.getIO().emit("task_updated"); // Emit event to refresh tasks after deletion
+    return task;
   },
 
   /**

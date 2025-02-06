@@ -128,7 +128,7 @@ POST http://localhost:3900/api/v1/report
 Content-Type: application/json
 
 {
-    "evidence": "https://storage.example.com/evidence/maintenance-check.pdf",
+    "evidence": "",
     "description": "Scheduled monthly server maintenance completed",
     "pelapor": "Ahmad Teknisi",
     "phone": "+62812-3456-7890",
@@ -170,3 +170,6 @@ GET http://localhost:3900/api/v1/report/pelapor/Ahmad%20Teknisi
 
 ### Search Reports
 GET http://localhost:3900/api/v1/report/search?query=maintenance
+
+### Get Today's Reports
+GET http://localhost:3900/api/v1/report/filter/today

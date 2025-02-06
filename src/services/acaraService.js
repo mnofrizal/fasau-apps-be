@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const socketUtils = require("../utils/socket");
 const prisma = new PrismaClient();
 
 const acaraService = {
@@ -31,9 +32,11 @@ const acaraService = {
    * @returns {Promise<Object>} Created acara object
    */
   createAcara: async (acaraData) => {
-    return await prisma.acara.create({
+    const acara = await prisma.acara.create({
       data: acaraData,
     });
+    socketUtils.getIO().emit("acara_updated"); // Emit event to refresh events
+    return acara;
   },
 
   /**
@@ -43,10 +46,12 @@ const acaraService = {
    * @returns {Promise<Object>} Updated acara object
    */
   updateAcara: async (id, acaraData) => {
-    return await prisma.acara.update({
+    const acara = await prisma.acara.update({
       where: { id },
       data: acaraData,
     });
+    socketUtils.getIO().emit("acara_updated"); // Emit event to refresh events after update
+    return acara;
   },
 
   /**
@@ -55,9 +60,11 @@ const acaraService = {
    * @returns {Promise<Object>} Deleted acara object
    */
   deleteAcara: async (id) => {
-    return await prisma.acara.delete({
+    const acara = await prisma.acara.delete({
       where: { id },
     });
+    socketUtils.getIO().emit("acara_updated"); // Emit event to refresh events after deletion
+    return acara;
   },
 
   /**

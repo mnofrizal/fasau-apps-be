@@ -18,4 +18,7 @@ router.get("/pelapor/:pelapor", reportController.getReportsByPelapor);
 // Search reports
 router.get("/search", reportController.searchReports);
 
+// Get today's reports
+router.get("/filter/today", reportController.getTodayReports);
+
 module.exports = router;

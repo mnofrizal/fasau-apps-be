@@ -71,7 +71,7 @@ enum ReportCategory {
 
 model TaskReport {
   id          Int            @id @default(autoincrement())
-  evidence    String // URL or file path to the evidence
+  evidence    String? // URL or file path to the evidence
   description String         @db.Text
   pelapor     String
   phone       String

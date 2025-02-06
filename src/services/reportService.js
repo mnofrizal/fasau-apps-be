@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const socketUtils = require("../utils/socket");
 const prisma = new PrismaClient();
 
 const reportService = {
@@ -31,9 +32,11 @@ const reportService = {
    * @returns {Promise<Object>} Created report object
    */
   createReport: async (reportData) => {
-    return await prisma.taskReport.create({
+    const report = await prisma.taskReport.create({
       data: reportData,
     });
+    socketUtils.getIO().emit("report_created"); // Emit event to refresh reports
+    return report;
   },
 
   /**
@@ -43,10 +46,12 @@ const reportService = {
    * @returns {Promise<Object>} Updated report object
    */
   updateReport: async (id, reportData) => {
-    return await prisma.taskReport.update({
+    const report = await prisma.taskReport.update({
       where: { id },
       data: reportData,
     });
+    socketUtils.getIO().emit("report_created"); // Emit event to refresh reports after update
+    return report;
   },
 
   /**
@@ -55,9 +60,11 @@ const reportService = {
    * @returns {Promise<Object>} Deleted report object
    */
   deleteReport: async (id) => {
-    return await prisma.taskReport.delete({
+    const report = await prisma.taskReport.delete({
       where: { id },
     });
+    socketUtils.getIO().emit("report_created"); // Emit event to refresh reports after deletion
+    return report;
   },
 
   /**
@@ -101,6 +108,30 @@ const reportService = {
           { pelapor: { contains: query, mode: "insensitive" } },
           { evidence: { contains: query, mode: "insensitive" } },
         ],
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  },
+
+  /**
+   * Get today's reports
+   * @returns {Promise<Array>} Array of today's reports
+   */
+  getTodayReports: async () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    return await prisma.taskReport.findMany({
+      where: {
+        createdAt: {
+          gte: today,
+          lt: tomorrow,
+        },
       },
       orderBy: {
         createdAt: "desc",
