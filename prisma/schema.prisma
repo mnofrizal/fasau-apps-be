@@ -33,15 +33,27 @@ enum TaskCategory {
 }
 
 model Task {
-  id         Int          @id @default(autoincrement())
-  title      String
-  category   TaskCategory @default(TASK)
-  status     TaskStatus   @default(INPROGRESS)
-  keterangan String?      @db.Text
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id          Int          @id @default(autoincrement())
+  title       String
+  category    TaskCategory @default(TASK)
+  status      TaskStatus   @default(INPROGRESS)
+  keterangan  String?      @db.Text
+  isUrgent    Boolean      @default(false)
+  waMessageId String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@map("tasks")
+}
+
+model WhatsappConfig {
+  id        Int      @id @default(autoincrement())
+  groupId   String   @unique
+  groupName String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("whatsapp_configs")
 }
 
 enum AcaraStatus {
@@ -67,6 +79,13 @@ model Acara {
 enum ReportCategory {
   CM
   PM
+  AC
+  MK
+  TIJ
+  TDP
+  JSI
+  PMT
+  PST
 }
 
 model TaskReport {

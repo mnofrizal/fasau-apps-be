@@ -42,7 +42,7 @@ const taskController = {
    */
   createTask: async (req, res) => {
     try {
-      const { title, category, status, keterangan } = req.body;
+      const { title, category, status, keterangan, sendWa } = req.body;
 
       // Validate required fields
       if (!title) {
@@ -72,6 +72,7 @@ const taskController = {
         category,
         status,
         keterangan,
+        sendWa,
       });
       return successResponse(res, 201, "Task created successfully", task);
     } catch (error) {

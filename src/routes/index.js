@@ -3,6 +3,7 @@ const userRoutes = require("./userRoutes");
 const taskRoutes = require("./taskRoutes");
 const acaraRoutes = require("./acaraRoutes");
 const reportRoutes = require("./reportRoutes");
+const whatsappConfigRoutes = require("./whatsappConfigRoutes");
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.use("/users", userRoutes);
 router.use("/tasks", taskRoutes);
 router.use("/acara", acaraRoutes);
 router.use("/report", reportRoutes);
+router.use("/whatsapp-config", whatsappConfigRoutes);
 
 // Health check route
 router.get("/health", (req, res) => {

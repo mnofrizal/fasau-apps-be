@@ -1,16 +1,64 @@
+### Variables
+@baseUrl = http://localhost:3900/api/v1
+
 ### Health Check
-GET http://localhost:3900/api/v1/health
+GET {{baseUrl}}/health
+
+### ==================== WhatsApp Config Routes ====================
+
+### Get WhatsApp Configuration (Database)
+GET {{baseUrl}}/whatsapp-config
+
+### Create/Update WhatsApp Configuration (Database)
+POST {{baseUrl}}/whatsapp-config
+Content-Type: application/json
+
+{
+    "groupId": "123456789@g.us",
+    "groupName": "FASAU Notifications"
+}
+
+### Delete WhatsApp Configuration (Database)
+DELETE {{baseUrl}}/whatsapp-config
+
+### ==================== WhatsApp API Routes ====================
+@waUrl = http://localhost:3920/api
+
+### Get All WhatsApp Groups
+GET {{waUrl}}/groups
+
+### Send Direct Message
+POST {{waUrl}}/messages
+Content-Type: application/json
+
+{
+    "phoneNumber": "628123456789",
+    "message": "Hello from FASAU API!"
+}
+
+### Send Template Message
+POST {{waUrl}}/messages/template
+Content-Type: application/json
+
+{
+    "templateName": "fasauSendTaskToGrup",
+    "groupId": "123456789@g.us",
+    "data": {
+        "title": "API Integration Test",
+        "keterangan": "Testing WhatsApp integration",
+    }
+}
 
 ### ==================== User Routes ====================
 
 ### Get All Users
-GET http://localhost:3900/api/v1/users
+GET {{baseUrl}}/users
 
 ### Get User by ID
-GET http://localhost:3900/api/v1/users/1
+GET {{baseUrl}}/users/1
 
 ### Create User
-POST http://localhost:3900/api/v1/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
@@ -19,7 +67,7 @@ Content-Type: application/json
 }
 
 ### Update User
-PUT http://localhost:3900/api/v1/users/1
+PUT {{baseUrl}}/users/1
 Content-Type: application/json
 
 {
@@ -27,18 +75,18 @@ Content-Type: application/json
 }
 
 ### Delete User
-DELETE http://localhost:3900/api/v1/users/1
+DELETE {{baseUrl}}/users/1
 
 ### ==================== Task Routes ====================
 
 ### Get All Tasks
-GET http://localhost:3900/api/v1/tasks
+GET {{baseUrl}}/tasks
 
 ### Get Task by ID
-GET http://localhost:3900/api/v1/tasks/1
+GET {{baseUrl}}/tasks/1
 
 ### Create MEMO Task
-POST http://localhost:3900/api/v1/tasks
+POST {{baseUrl}}/tasks
 Content-Type: application/json
 
 {
@@ -49,18 +97,44 @@ Content-Type: application/json
 }
 
 ### Create TASK
-POST http://localhost:3900/api/v1/tasks
+POST {{baseUrl}}/tasks
 Content-Type: application/json
 
 {
     "title": "Implement New Feature",
     "category": "TASK",
     "status": "INPROGRESS",
-    "keterangan": "Add new authentication module"
+    "keterangan": "Add new authentication module",
+    "sendWa": false
 }
 
+### Create TASK with WhatsApp Notification
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "DUDUK 5",
+    "category": "TASK",
+    "status": "INPROGRESS",
+    "keterangan": "Apply critical security patches to production servers",
+    "sendWa": true
+}
+
+### Create TASK with WhatsApp Notification
+PUT {{baseUrl}}/tasks/48
+Content-Type: application/json
+
+{
+    "title": "DUDUK 6",
+    "category": "TASK",
+    "status": "INPROGRESS",
+    "keterangan": "Apply critical security patches to production servers",
+    "sendWa": true
+}
+
+
 ### Create LAPORAN
-POST http://localhost:3900/api/v1/tasks
+POST {{baseUrl}}/tasks
 Content-Type: application/json
 
 {
@@ -71,21 +145,21 @@ Content-Type: application/json
 }
 
 ### Get Tasks by Status (INPROGRESS)
-GET http://localhost:3900/api/v1/tasks/status/INPROGRESS
+GET {{baseUrl}}/tasks/status/INPROGRESS
 
 ### Get Tasks by Category (MEMO)
-GET http://localhost:3900/api/v1/tasks/category/MEMO
+GET {{baseUrl}}/tasks/category/MEMO
 
 ### ==================== Acara Routes ====================
 
 ### Get All Acara
-GET http://localhost:3900/api/v1/acara
+GET {{baseUrl}}/acara
 
 ### Get Acara by ID
-GET http://localhost:3900/api/v1/acara/1
+GET {{baseUrl}}/acara/1
 
 ### Create Acara
-POST http://localhost:3900/api/v1/acara
+POST {{baseUrl}}/acara
 Content-Type: application/json
 
 {
@@ -98,7 +172,7 @@ Content-Type: application/json
 }
 
 ### Update Acara Status to DONE
-PUT http://localhost:3900/api/v1/acara/1
+PUT {{baseUrl}}/acara/1
 Content-Type: application/json
 
 {
@@ -107,24 +181,24 @@ Content-Type: application/json
 }
 
 ### Delete Acara
-DELETE http://localhost:3900/api/v1/acara/1
+DELETE {{baseUrl}}/acara/1
 
 ### Get Acara by Status (UPCOMING)
-GET http://localhost:3900/api/v1/acara/status/UPCOMING
+GET {{baseUrl}}/acara/status/UPCOMING
 
 ### Get Upcoming Acara (Next 7 days)
-GET http://localhost:3900/api/v1/acara/upcoming/week
+GET {{baseUrl}}/acara/upcoming/week
 
 ### ==================== Report Routes ====================
 
 ### Get All Reports
-GET http://localhost:3900/api/v1/report
+GET {{baseUrl}}/report
 
 ### Get Report by ID
-GET http://localhost:3900/api/v1/report/1
+GET {{baseUrl}}/report/1
 
 ### Create PM Report
-POST http://localhost:3900/api/v1/report
+POST {{baseUrl}}/report
 Content-Type: application/json
 
 {
@@ -136,7 +210,7 @@ Content-Type: application/json
 }
 
 ### Create CM Report
-POST http://localhost:3900/api/v1/report
+POST {{baseUrl}}/report
 Content-Type: application/json
 
 {
@@ -148,7 +222,7 @@ Content-Type: application/json
 }
 
 ### Update Report
-PUT http://localhost:3900/api/v1/report/1
+PUT {{baseUrl}}/report/1
 Content-Type: application/json
 
 {
@@ -157,19 +231,19 @@ Content-Type: application/json
 }
 
 ### Delete Report
-DELETE http://localhost:3900/api/v1/report/1
+DELETE {{baseUrl}}/report/1
 
 ### Get Reports by Category (PM)
-GET http://localhost:3900/api/v1/report/category/PM
+GET {{baseUrl}}/report/category/PM
 
 ### Get Reports by Category (CM)
-GET http://localhost:3900/api/v1/report/category/CM
+GET {{baseUrl}}/report/category/CM
 
 ### Get Reports by Pelapor
-GET http://localhost:3900/api/v1/report/pelapor/Ahmad%20Teknisi
+GET {{baseUrl}}/report/pelapor/Ahmad%20Teknisi
 
 ### Search Reports
-GET http://localhost:3900/api/v1/report/search?query=maintenance
+GET {{baseUrl}}/report/search?query=maintenance
 
 ### Get Today's Reports
-GET http://localhost:3900/api/v1/report/filter/today
+GET {{baseUrl}}/report/filter/today
