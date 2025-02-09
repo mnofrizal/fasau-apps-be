@@ -8,8 +8,8 @@ const prisma = new PrismaClient();
 
 // Configuration
 const SEND_TIME = {
-  hour: 6,
-  minute: 30,
+  hour: 7,
+  minute: 00,
 };
 
 // Helper function to delay execution
