@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 // Configuration
 const SEND_TIME = {
   hour: 7,
-  minute: 00,
+  minute: 0,
 };
 
 // Helper function to delay execution
@@ -155,7 +155,7 @@ Harap lakukan pemeriksaan dan pemeliharaan sesuai dengan detail di atas. Selamat
       }
     },
     {
-      timezone: "Asia/Jakarta", // Set timezone to Asia/Jakarta
+      timezone: "Europe/London", // Set timezone to Asia/Jakarta
     }
   );
   console.log(
