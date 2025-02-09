@@ -8,6 +8,7 @@ const ENDPOINTS = {
   WA: {
     BASE: WA_URL,
     SEND_MESSAGE: `${WA_URL}/messages`,
+    SEND_MESSAGE_GROUP: `${WA_URL}/messages/group`,
     SEND_TEMPLATE: `${WA_URL}/messages/template`,
     GET_GROUPS: `${WA_URL}/groups`,
   },

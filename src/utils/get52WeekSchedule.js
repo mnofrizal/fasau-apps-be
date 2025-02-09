@@ -3,29 +3,29 @@ const pmTeams = {
   team1: {
     name: "Tim 1",
     members: [
-      { name: "Sahab", phone: "6287733760363" },
-      { name: "Ade", phone: "6287733760363" },
+      { name: "Sahab", phone: "6285920157602" },
+      { name: "Ade", phone: "6287778511596" },
     ],
   },
   team2: {
     name: "Tim 2",
     members: [
-      { name: "Setiman", phone: "6287733760363" },
-      { name: "Suhaemi", phone: "6287733760363" },
+      { name: "Setiman", phone: "6287771212492" },
+      { name: "Suhaemi", phone: "6282125458011" },
     ],
   },
   team3: {
     name: "Tim 3",
     members: [
-      { name: "Asmara", phone: "6287733760363" },
-      { name: "Rifki", phone: "6287733760363" },
+      { name: "Asmara", phone: "6287811223995" },
+      { name: "Rifki", phone: "6287770878765" },
     ],
   },
   team4: {
     name: "Tim 4",
     members: [
-      { name: "Rijal", phone: "6287733760363" },
-      { name: "Yanto", phone: "6287733760363" },
+      { name: "Rijal", phone: "6287880855311" },
+      { name: "Yanto", phone: "6285956157199" },
     ],
   },
 };
@@ -52,8 +52,7 @@ const pmAssets = [
 3. Periksa, dan perbaikan/pengecatan cladding 
 4. Periksa, dan perbaikan lantai keramik 
 5. Periksa, dan perbaikan aksesoris dinding
-6. Periksa kondisi handrail
-`,
+6. Periksa kondisi handrail`,
   },
   {
     id: 3,
@@ -63,8 +62,7 @@ const pmAssets = [
 1. Persiapan peralatan dan mobilisasi
 2. Pengetesan dan perbaikan Urinoir, wastafel, closet, jet shower, shower.
 3. Periksa dan pembersihan floor drain.
-4. Periksa Pompa dan pelampung penampungan air
-`,
+4. Periksa Pompa dan pelampung penampungan air`,
   },
   {
     id: 4,
@@ -75,8 +73,7 @@ const pmAssets = [
 2. Periksa dan perbaikan penggantian lampu
 3. Periksa dan perbaikan peratalatan elektronik
 4. Periksa dan perbaikan stop kontak dan MCB
-5. Periksa dan perbaikan exhaust
-`,
+5. Periksa dan perbaikan exhaus`,
   },
   {
     id: 5,
@@ -90,8 +87,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 6,
@@ -105,8 +101,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 7,
@@ -120,8 +115,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 8,
@@ -135,8 +129,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 9,
@@ -150,8 +143,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 10,
@@ -165,8 +157,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 11,
@@ -180,8 +171,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 12,
@@ -263,8 +253,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 18,
@@ -278,8 +267,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 19,
@@ -288,8 +276,7 @@ const pmAssets = [
     detail: `
 1. Persiapan peralatan dan mobilisasi
 2. Periksa lantai beton area olah raga
-3. Periksa dan perbaikan aksesoris lapanga olah raga
-`,
+3. Periksa dan perbaikan aksesoris lapanga olah raga`,
   },
   {
     id: 20,
@@ -299,8 +286,7 @@ const pmAssets = [
 1. Persiapan peralatan dan mobilisasi
 2. Periksa dan perbaikan dudukan saung
 3. Periksa dan perbaikan atap jerami
-4. Periksa dan perbaikan ikatan tulangan saung
-`,
+4. Periksa dan perbaikan ikatan tulangan saung`,
   },
   {
     id: 21,
@@ -309,8 +295,7 @@ const pmAssets = [
     detail: `
 1. Persiapan peralatan dan mobilisa
 2. Periksa dan perbaikan pondasi reiling pagar
-3. Periksa dan perbaikan pengecatan pagar
-`,
+3. Periksa dan perbaikan pengecatan pagar`,
   },
   {
     id: 22,
@@ -319,8 +304,7 @@ const pmAssets = [
     detail: `
 1. Persiapan peralatan dan mobilisa
 2. Periksa struktur pintu air
-3. periksa dan hand valve pelumasan pintu air
-`,
+3. periksa dan hand valve pelumasan pintu air`,
   },
   {
     id: 23,
@@ -334,8 +318,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 24,
@@ -349,8 +332,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 25,
@@ -364,8 +346,7 @@ const pmAssets = [
 5. Periksa, dan perbaikan lantai keramik 
 6. Periksa dan perbaikan sanitasi area
 7. Periksa dan perbaikan electrical (lampu, stop kontak, instalasi listiklainnya)
-8. Periksa dan perbaikan aksesoris gedung
-`,
+8. Periksa dan perbaikan aksesoris gedung`,
   },
   {
     id: 26,
@@ -375,8 +356,7 @@ const pmAssets = [
 1. Persiapan peralatan dan mobilisa
 2. Periksa lantai beton 
 3. Periksa dan perbaikan turap sungai
-4. Periksa kondisi bak kontrol
-`,
+4. Periksa kondisi bak kontrol`,
   },
   {
     id: 27,
@@ -386,8 +366,7 @@ const pmAssets = [
 1. Persiapan peralatan dan mobilisa
 2. Periksa lantai beton 
 3. Periksa dan perbaikan turap sungai
-4. Periksa kondisi bak kontrol
-`,
+4. Periksa kondisi bak kontrol`,
   },
   {
     id: 28,
@@ -397,8 +376,7 @@ const pmAssets = [
 1. Persiapan peralatan dan mobilisa
 2. Periksa danperbaikan kondisi pipa air KTI
 3. Periksa dan perbaikan keran air dan flow meter
-4. Periksa/perbaikan flow meter dan catat meter air 
-`,
+4. Periksa/perbaikan flow meter dan catat meter air`,
   },
   {
     id: 29,
@@ -408,8 +386,7 @@ const pmAssets = [
 1. Persiapan peralatan dan mobilisa
 2. Periksa danperbaikan kondisi pipa air KTI
 3. Periksa dan perbaikan keran air dan flow meter
-4. Periksa/perbaikan flow meter dan catat meter air 
-`,
+4. Periksa/perbaikan flow meter dan catat meter air`,
   },
   {
     id: 30,
@@ -448,8 +425,7 @@ const pmAssets = [
 4. Periksa dan perbaikan flow meter
 5. Periksa dan catat kebocoran 
 6. Input Meter KTI database
-7. Cetak tagihan KTI
-    `,
+7. Cetak tagihan KTI`,
   },
 ];
 

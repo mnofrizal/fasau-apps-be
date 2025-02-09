@@ -1,43 +1,63 @@
 const cron = require("node-cron");
 const axios = require("axios");
+const { PrismaClient } = require("@prisma/client");
+const { ENDPOINTS } = require("../config/constants");
 const { getTeamAssignment } = require("../utils/get52WeekSchedule");
+
+const prisma = new PrismaClient();
 
 // Configuration
 const SEND_TIME = {
-  hour: 1,
-  minute: 47,
+  hour: 6,
+  minute: 30,
 };
 
 // Helper function to delay execution
 const delay = (seconds) =>
   new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
-// Helper function to get random delay between 5-10 seconds
-const getRandomDelay = () => Math.floor(Math.random() * 6) + 5;
+// Helper function to get random delay between 1-10 seconds
+const getRandomDelay = () => Math.floor(Math.random() * 10) + 1;
+
+// Helper function to get group ID from database
+const getWhatsAppGroupId = async () => {
+  try {
+    const config = await prisma.whatsappConfig.findFirst();
+    return config?.groupId;
+  } catch (error) {
+    console.error("Error fetching WhatsApp group ID:", error);
+    return null;
+  }
+};
+
+// Function to format summary message
+const formatSummaryMessage = (assignments) => {
+  const date = new Date().toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  const formattedAssignments = assignments
+    .map(
+      (a, index) =>
+        `${index + 1}. ${a.asset.name} : _${a.team.members
+          .map((m) => m.name)
+          .join(" dan ")}_`
+    )
+    .join("\n");
+
+  return `
+  📅 *JADWAL PM ${date}*
+
+${formattedAssignments}
+  
+Untuk detail pekerjaannya telah dikirim pada masing-masing tim.
+Terimakasih 🙏`;
+};
 
 // Schedule task to run at configured time every day
 const scheduleDailyMessage = () => {
-  // Check time every minute for countdown
-  cron.schedule("* * * * *", () => {
-    const now = new Date();
-    const target = new Date();
-    target.setHours(SEND_TIME.hour, SEND_TIME.minute, 0, 0);
-
-    // If target time has passed for today, set for next day
-    if (now > target) {
-      target.setDate(target.getDate() + 1);
-    }
-
-    const diffMs = target - now;
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-
-    if (diffMins < 2) {
-      console.log(
-        `Message will be sent in ${diffMins} minute${diffMins !== 1 ? "s" : ""}`
-      );
-    }
-  });
-
   // Main schedule for sending message at configured time
   cron.schedule(
     `${SEND_TIME.minute} ${SEND_TIME.hour} * * *`,
@@ -77,7 +97,7 @@ Harap lakukan pemeriksaan dan pemeliharaan sesuai dengan detail di atas. Selamat
               await delay(delaySeconds);
 
               await axios.post(
-                "http://localhost:3920/api/messages",
+                ENDPOINTS.WA.SEND_MESSAGE,
                 {
                   phoneNumber: member.phone,
                   message: message,
@@ -96,6 +116,39 @@ Harap lakukan pemeriksaan dan pemeliharaan sesuai dengan detail di atas. Selamat
               );
             }
           }
+        }
+
+        // Send summary to group
+        try {
+          const groupId = await getWhatsAppGroupId();
+          if (!groupId) {
+            console.error("No WhatsApp group ID found in database");
+            return;
+          }
+
+          // Add delay before sending group message
+          const delaySeconds = getRandomDelay();
+          console.log(
+            `Waiting ${delaySeconds} seconds before sending group message...`
+          );
+          await delay(delaySeconds);
+
+          const summaryMessage = formatSummaryMessage(assignments);
+          await axios.post(
+            ENDPOINTS.WA.SEND_MESSAGE_GROUP,
+            {
+              groupId: groupId,
+              message: summaryMessage,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("Summary message sent successfully to group");
+        } catch (error) {
+          console.error("Error sending group message:", error.message);
         }
       } catch (error) {
         console.error("Error in daily message scheduler:", error.message);
@@ -116,5 +169,5 @@ Harap lakukan pemeriksaan dan pemeliharaan sesuai dengan detail di atas. Selamat
 
 module.exports = {
   scheduleDailyMessage,
-  SEND_TIME, // Export for external use if needed
+  SEND_TIME,
 };
