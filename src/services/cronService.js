@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Configuration
 const SEND_TIME = {
-  hour: 7,
+  hour: 0,
   minute: 0,
 };
 
