@@ -12,4 +12,5 @@
 -- the enum.
 
 
-ALTER TYPE "TaskCategory" ADD VALUE 'JASA';
+
+ALTER TYPE "TaskCategory" ADD VALUE 'MATERIAL';
