@@ -1,9 +1,6 @@
-/*
-  Warnings:
+-- First update existing NULL values to 'LAPORAN'
+UPDATE "task_reports" SET "subCategory" = 'LAPORAN' WHERE "subCategory" IS NULL;
 
-  - Made the column `subCategory` on table `task_reports` required. This step will fail if there are existing NULL values in that column.
-
-*/
--- AlterTable
+-- Then make the column required with default
 ALTER TABLE "task_reports" ALTER COLUMN "subCategory" SET NOT NULL,
 ALTER COLUMN "subCategory" SET DEFAULT 'LAPORAN';
