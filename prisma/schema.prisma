@@ -103,7 +103,7 @@ model TaskReport {
   pelapor     String
   phone       String
   category    ReportCategory
-  subCategory ReportSubCategory?
+  subCategory ReportSubCategory? @default(LAPORAN)
   tindakan    String?            @db.Text
   status      TaskStatus         @default(BACKLOG)
   createdAt   DateTime           @default(now())
