@@ -82,13 +82,13 @@ model Acara {
 enum ReportCategory {
   CM
   PM
-  // AC
-  // MK
-  // TIJ
-  // TDP
-  // JSI
-  // PMT
-  // PST
+  AC
+  MK
+  TIJ
+  TDP
+  JSI
+  PMT
+  PST
 }
 
 enum ReportSubCategory {
