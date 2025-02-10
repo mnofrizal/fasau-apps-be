@@ -5,7 +5,18 @@ const {
   validationErrorResponse,
 } = require("../utils/responseHandler");
 
-const VALID_CATEGORIES = ["CM", "PM"];
+const VALID_CATEGORIES = [
+  "CM",
+  "PM",
+  "AC",
+  "MK",
+  "TIJ",
+  "TDP",
+  "JSI",
+  "PMT",
+  "PST",
+];
+const VALID_SUBCATEGORIES = ["LAPORAN", "TEMUAN"];
 
 const reportController = {
   /**
@@ -46,7 +57,16 @@ const reportController = {
    */
   createReport: async (req, res) => {
     try {
-      const { evidence, description, pelapor, phone, category } = req.body;
+      const {
+        evidence,
+        description,
+        pelapor,
+        phone,
+        category,
+        subCategory,
+        tindakan,
+        status,
+      } = req.body;
 
       // Validate required fields
       if (!description || !pelapor || !phone || !category) {
@@ -71,12 +91,34 @@ const reportController = {
         );
       }
 
+      // Validate subCategory if provided
+      if (subCategory && !VALID_SUBCATEGORIES.includes(subCategory)) {
+        return validationErrorResponse(
+          res,
+          `Invalid subCategory value. Must be one of: ${VALID_SUBCATEGORIES.join(
+            ", "
+          )}`
+        );
+      }
+
+      // Validate status if provided
+      const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
+      if (status && !VALID_STATUSES.includes(status)) {
+        return validationErrorResponse(
+          res,
+          `Invalid status value. Must be one of: ${VALID_STATUSES.join(", ")}`
+        );
+      }
+
       const report = await reportService.createReport({
         evidence,
         description,
         pelapor,
         phone,
         category,
+        subCategory,
+        tindakan,
+        status,
       });
 
       return successResponse(res, 201, "Report created successfully", report);
@@ -91,7 +133,16 @@ const reportController = {
   updateReport: async (req, res) => {
     try {
       const { id } = req.params;
-      const { evidence, description, pelapor, phone, category } = req.body;
+      const {
+        evidence,
+        description,
+        pelapor,
+        phone,
+        category,
+        subCategory,
+        tindakan,
+        status,
+      } = req.body;
 
       // Validate phone number if provided
       if (phone && !phone.match(/^[0-9+\-\s()]+$/)) {
@@ -108,12 +159,34 @@ const reportController = {
         );
       }
 
+      // Validate subCategory if provided
+      if (subCategory && !VALID_SUBCATEGORIES.includes(subCategory)) {
+        return validationErrorResponse(
+          res,
+          `Invalid subCategory value. Must be one of: ${VALID_SUBCATEGORIES.join(
+            ", "
+          )}`
+        );
+      }
+
+      // Validate status if provided
+      const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
+      if (status && !VALID_STATUSES.includes(status)) {
+        return validationErrorResponse(
+          res,
+          `Invalid status value. Must be one of: ${VALID_STATUSES.join(", ")}`
+        );
+      }
+
       const report = await reportService.updateReport(parseInt(id), {
         evidence,
         description,
         pelapor,
         phone,
         category,
+        subCategory,
+        tindakan,
+        status,
       });
 
       if (!report) {

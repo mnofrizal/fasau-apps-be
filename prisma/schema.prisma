@@ -24,12 +24,15 @@ enum TaskStatus {
   COMPLETED
   CANCEL
   INPROGRESS
+  BACKLOG
 }
 
 enum TaskCategory {
   MEMO
   TASK
   LAPORAN
+  JASA
+  MATERIAL
 }
 
 model Task {
@@ -88,15 +91,23 @@ enum ReportCategory {
   PST
 }
 
+enum ReportSubCategory {
+  LAPORAN
+  TEMUAN
+}
+
 model TaskReport {
-  id          Int            @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   evidence    String? // URL or file path to the evidence
-  description String         @db.Text
+  description String             @db.Text
   pelapor     String
   phone       String
   category    ReportCategory
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  subCategory ReportSubCategory?
+  tindakan    String?            @db.Text
+  status      TaskStatus         @default(BACKLOG)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
 
   @@map("task_reports")
 }

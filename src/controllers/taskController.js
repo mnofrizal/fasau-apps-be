@@ -5,8 +5,8 @@ const {
   validationErrorResponse,
 } = require("../utils/responseHandler");
 
-const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS"];
-const VALID_CATEGORIES = ["MEMO", "TASK", "LAPORAN"];
+const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
+const VALID_CATEGORIES = ["MEMO", "TASK", "LAPORAN", "JASA", "MATERIAL"];
 
 const taskController = {
   /**
