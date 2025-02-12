@@ -13,4 +13,3 @@
 
 
 ALTER TYPE "TaskCategory" ADD VALUE 'JASA';
-prisma migrate resolve --rolled-back "0250210153453_add_jasamaterial"

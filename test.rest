@@ -247,3 +247,11 @@ GET {{baseUrl}}/report/search?query=maintenance
 
 ### Get Today's Reports
 GET {{baseUrl}}/report/filter/today
+
+### ==================== Team Assignment Routes ====================
+
+### Get Today's Team Assignments
+GET {{baseUrl}}/team-assignments/today
+
+### Get Team Assignments for Specific Date (Format: YYYY-MM-DD)
+GET {{baseUrl}}/team-assignments/date/2025-01-01
