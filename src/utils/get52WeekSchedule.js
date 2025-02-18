@@ -523,41 +523,53 @@ const pmSchedule = {
 
 // Function to determine which team is working on a given date
 const getTeamAssignment = (date) => {
-  const startDate = new Date("2025-01-01"); // Starting point of the 52-week cycle
   const targetDate = new Date(date);
 
-  // Calculate weeks elapsed since start
-  const weeksDiff = Math.floor(
-    (targetDate - startDate) / (7 * 24 * 60 * 60 * 1000)
-  );
+  // Get ISO week number
+  const getWeekDetails = (date) => {
+    const target = new Date(date.getTime());
+    const dayNr = (date.getDay() + 6) % 7;
+    target.setDate(target.getDate() - dayNr + 3);
+    const firstThursday = target.valueOf();
+    target.setMonth(0, 1);
+    if (target.getDay() !== 4) {
+      target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
+    }
+    const weekInYear = 1 + Math.ceil((firstThursday - target) / 604800000);
 
-  // Determine which week in the 4-week cycle (0-3)
-  const weekInCycle = weeksDiff % 4;
+    // Calculate cycle week (1-4) based on the week number
+    const weekInCycle = ((weekInYear - 1) % 4) + 1;
+    return { weekInCycle, weekInYear };
+  };
 
-  // Get day of week (0-6, where 0 is Sunday)
+  // Get week details
+  const { weekInCycle } = getWeekDetails(targetDate);
+
+  // Get day of week and convert to schedule format (we only have Mon-Fri)
   const dayOfWeek = targetDate.getDay();
-
-  // Convert to our schedule format (we only have Mon-Fri)
   const days = ["", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT"];
   const scheduleDay = days[dayOfWeek];
 
-  // If weekend or invalid day, return null
-  if (!scheduleDay) return null;
+  // If weekend or invalid day, return empty array
+  if (!scheduleDay) return [];
 
-  // Get week schedule
-  const weekSchedule = pmSchedule[`week${weekInCycle + 1}`];
-  if (!weekSchedule) return null;
+  // Get week schedule based on ISO week cycle
+  const weekSchedule = pmSchedule[`week${weekInCycle}`];
+  if (!weekSchedule) return [];
 
   // Get day schedule
   const daySchedule = weekSchedule[scheduleDay];
-  if (!daySchedule) return null;
+  if (!daySchedule) return [];
 
-  // Return the assignments for this day
+  // Map assignments to detailed objects with asset and team info
   return daySchedule.map((assignment) => ({
     asset: pmAssets.find((a) => a.id === assignment.assetId),
     team: Object.values(pmTeams).find(
       (_, index) => index + 1 === assignment.teamId
     ),
+    weekInYear: getWeekDetails(targetDate).weekInYear,
+    weekInCycle: weekInCycle,
+    date: targetDate.toISOString().split("T")[0],
   }));
 };
 
