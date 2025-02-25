@@ -1,0 +1,30 @@
+### Variables
+@baseUrl = http://localhost:3900/api/v1
+
+### ==================== User Routes ====================
+
+### Get All Users
+GET {{baseUrl}}/users
+
+### Get User by ID
+GET {{baseUrl}}/users/1
+
+### Create User
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "name": "Test User"
+}
+
+### Update User
+PUT {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+    "name": "Updated User Name"
+}
+
+### Delete User
+DELETE {{baseUrl}}/users/1

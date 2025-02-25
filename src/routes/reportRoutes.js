@@ -21,4 +21,7 @@ router.get("/search", reportController.searchReports);
 // Get today's reports
 router.get("/filter/today", reportController.getTodayReports);
 
+// Escalate report to task
+router.post("/:id/escalate", reportController.escalateReportToTask);
+
 module.exports = router;

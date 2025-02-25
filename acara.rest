@@ -1,0 +1,53 @@
+### Variables
+@baseUrl = http://localhost:3900/api/v1
+
+### ==================== Acara Routes ====================
+
+### Get All Acara
+GET {{baseUrl}}/acara
+
+### Get Acara by ID
+GET {{baseUrl}}/acara/1
+
+### Create Acara
+POST {{baseUrl}}/acara
+Content-Type: application/json
+
+{
+    "title": "Monthly Team Meeting",
+    "dateTime": "2025-03-15T10:00:00Z",
+    "location": "Conference Room B",
+    "status": "UPCOMING",
+    "description": "Monthly team sync and planning session",
+    "category": "Meeting"
+}
+
+### Update Acara
+PUT {{baseUrl}}/acara/1
+Content-Type: application/json
+
+{
+    "status": "DONE",
+    "description": "Meeting completed successfully"
+}
+
+### Delete Acara
+DELETE {{baseUrl}}/acara/1
+
+### Get Acara by Status (UPCOMING)
+GET {{baseUrl}}/acara/status/UPCOMING
+
+### Get Acara by Status (DONE)
+GET {{baseUrl}}/acara/status/DONE
+
+### Get Upcoming Acara (Next 7 days)
+GET {{baseUrl}}/acara/upcoming/week
+
+### Get Acara by Date Range
+GET {{baseUrl}}/acara/date-range?startDate=2025-02-01&endDate=2025-03-01
+
+### Get Acara by Category (Meeting)
+GET {{baseUrl}}/acara/category/Meeting
+
+### Get Acara by Category (Training)
+GET {{baseUrl}}/acara/category/Training

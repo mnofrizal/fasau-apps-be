@@ -1,0 +1,107 @@
+### Variables
+@baseUrl = http://localhost:3900/api/v1
+
+### ==================== Report Routes ====================
+
+### Get All Reports
+GET {{baseUrl}}/report
+
+### Get Report by ID
+GET {{baseUrl}}/report/16
+
+### Create TEMUAN Report (Auto-escalates to Task)
+POST {{baseUrl}}/report
+Content-Type: application/json
+
+{
+    "evidence": "",
+    "description": "Critical issue found: Water leakage in server room A5",
+    "pelapor": "John Engineer",
+    "phone": "+62812-3456-7891",
+    "category": "PM",
+    "subCategory": "TEMUAN",
+    "changedBy": "John Engineer"
+}
+
+### Create Regular Report (No Auto-escalation)
+POST {{baseUrl}}/report
+Content-Type: application/json
+
+{
+    "evidence": "",
+    "description": "Monthly PM check completed",
+    "pelapor": "John Engineer",
+    "phone": "+62812-3456-7891",
+    "category": "PM",
+    "subCategory": "LAPORAN",
+    "changedBy": "John Engineer"
+}
+
+### Create CM Report with System Status Update
+POST {{baseUrl}}/report
+Content-Type: application/json
+
+{
+    "evidence": "http://example.com/evidence.jpg",
+    "description": "Emergency network issue resolution",
+    "pelapor": "Budi Engineer",
+    "phone": "+62898-7654-3210",
+    "category": "CM",
+    "changedBy": "System"
+}
+
+### Update Report to TEMUAN (Will Auto-escalate)
+PUT {{baseUrl}}/report/1
+Content-Type: application/json
+
+{
+    "subCategory": "TEMUAN",
+    "description": "Upon inspection, found critical issue requiring immediate attention",
+    "changedBy": "Jane Supervisor"
+}
+
+### Update Report Status with ChangedBy
+PUT {{baseUrl}}/report/1
+Content-Type: application/json
+
+{
+    "status": "COMPLETED",
+    "description": "Issue resolved and verified",
+    "changedBy": "Jane Supervisor"
+}
+
+### Update Report Details
+PUT {{baseUrl}}/report/1
+Content-Type: application/json
+
+{
+    "description": "Updated maintenance report with additional findings",
+    "phone": "+62812-3456-7891",
+    "changedBy": "Bob Technician"
+}
+
+### Delete Report
+DELETE {{baseUrl}}/report/1
+
+### Get Reports by Category (PM)
+GET {{baseUrl}}/report/category/PM
+
+### Get Reports by Category (CM)
+GET {{baseUrl}}/report/category/CM
+
+### Get Reports by Pelapor
+GET {{baseUrl}}/report/pelapor/Ahmad%20Teknisi
+
+### Search Reports
+GET {{baseUrl}}/report/search?query=maintenance
+
+### Get Today's Reports
+GET {{baseUrl}}/report/filter/today
+
+### Escalate Report to Task
+POST {{baseUrl}}/report/18/escalate
+Content-Type: application/json
+
+{
+    "changedBy": "Sarah Manager"
+}

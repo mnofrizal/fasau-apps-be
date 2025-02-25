@@ -17,6 +17,7 @@ const VALID_CATEGORIES = [
   "PST",
 ];
 const VALID_SUBCATEGORIES = ["LAPORAN", "TEMUAN"];
+const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
 
 const reportController = {
   /**
@@ -66,6 +67,7 @@ const reportController = {
         subCategory,
         tindakan,
         status,
+        changedBy,
       } = req.body;
 
       // Validate required fields
@@ -102,7 +104,6 @@ const reportController = {
       }
 
       // Validate status if provided
-      const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
       if (status && !VALID_STATUSES.includes(status)) {
         return validationErrorResponse(
           res,
@@ -110,16 +111,19 @@ const reportController = {
         );
       }
 
-      const report = await reportService.createReport({
-        evidence,
-        description,
-        pelapor,
-        phone,
-        category,
-        subCategory,
-        tindakan,
-        status,
-      });
+      const report = await reportService.createReport(
+        {
+          evidence,
+          description,
+          pelapor,
+          phone,
+          category,
+          subCategory,
+          tindakan,
+          status,
+        },
+        changedBy || pelapor // Default to reporter's name if changedBy not provided
+      );
 
       return successResponse(res, 201, "Report created successfully", report);
     } catch (error) {
@@ -142,6 +146,7 @@ const reportController = {
         subCategory,
         tindakan,
         status,
+        changedBy,
       } = req.body;
 
       // Validate phone number if provided
@@ -170,7 +175,6 @@ const reportController = {
       }
 
       // Validate status if provided
-      const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
       if (status && !VALID_STATUSES.includes(status)) {
         return validationErrorResponse(
           res,
@@ -178,16 +182,20 @@ const reportController = {
         );
       }
 
-      const report = await reportService.updateReport(parseInt(id), {
-        evidence,
-        description,
-        pelapor,
-        phone,
-        category,
-        subCategory,
-        tindakan,
-        status,
-      });
+      const report = await reportService.updateReport(
+        parseInt(id),
+        {
+          evidence,
+          description,
+          pelapor,
+          phone,
+          category,
+          subCategory,
+          tindakan,
+          status,
+        },
+        changedBy || "System"
+      );
 
       if (!report) {
         return errorResponse(res, 404, "Report not found");
@@ -295,6 +303,30 @@ const reportController = {
         200,
         "Today's reports retrieved successfully",
         reports
+      );
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  },
+
+  /**
+   * Escalate a report to a task
+   */
+  escalateReportToTask: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { changedBy } = req.body;
+
+      const result = await reportService.escalateReportToTask(
+        parseInt(id),
+        changedBy || "System"
+      );
+
+      return successResponse(
+        res,
+        200,
+        "Report successfully escalated to task",
+        result
       );
     } catch (error) {
       return errorResponse(res, 500, error.message);

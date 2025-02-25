@@ -1,0 +1,47 @@
+### Variables
+@baseUrl = http://localhost:3900/api/v1
+@waUrl = http://localhost:3920/api
+
+### ==================== WhatsApp Config Routes ====================
+
+### Get WhatsApp Configuration (Database)
+GET {{baseUrl}}/whatsapp-config
+
+### Create/Update WhatsApp Configuration (Database)
+POST {{baseUrl}}/whatsapp-config
+Content-Type: application/json
+
+{
+    "groupId": "123456789@g.us",
+    "groupName": "FASAU Notifications"
+}
+
+### Delete WhatsApp Configuration (Database)
+DELETE {{baseUrl}}/whatsapp-config
+
+### ==================== WhatsApp API Routes ====================
+
+### Get All WhatsApp Groups
+GET {{waUrl}}/groups
+
+### Send Direct Message
+POST {{waUrl}}/messages
+Content-Type: application/json
+
+{
+    "phoneNumber": "628123456789",
+    "message": "Hello from FASAU API!"
+}
+
+### Send Template Message
+POST {{waUrl}}/messages/template
+Content-Type: application/json
+
+{
+    "templateName": "fasauSendTaskToGrup",
+    "groupId": "123456789@g.us",
+    "data": {
+        "title": "API Integration Test",
+        "keterangan": "Testing WhatsApp integration"
+    }
+}

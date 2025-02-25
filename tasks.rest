@@ -1,0 +1,118 @@
+### Variables
+@baseUrl = http://localhost:3900/api/v1
+
+### ==================== Task Routes ====================
+
+### Get All Tasks
+GET {{baseUrl}}/tasks
+
+### Get Task by ID
+GET {{baseUrl}}/tasks/20
+
+### Create MEMO Task
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "Team Meeting Summary",
+    "category": "MEMO",
+    "status": "INPROGRESS",
+    "keterangan": "Summary of weekly team sync meeting"
+}
+
+### Create TASK
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "Implement New Feature",
+    "category": "TASK",
+    "status": "INPROGRESS",
+    "keterangan": "Add new authentication module",
+    "sendWa": false
+}
+
+### Create TASK with WhatsApp Notification
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "Critical Security Update",
+    "category": "TASK",
+    "status": "INPROGRESS",
+    "keterangan": "Apply critical security patches to production servers",
+    "sendWa": true
+}
+
+### Create LAPORAN
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "Monthly Progress Report",
+    "category": "LAPORAN",
+    "status": "INPROGRESS",
+    "keterangan": "Project progress report for February 2025"
+}
+
+### Create TEMUAN Task
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "Ceiling Leak in Meeting Room",
+    "category": "TEMUAN",
+    "status": "INPROGRESS",
+    "keterangan": "Water leakage from ceiling in main meeting room needs immediate attention",
+    "isUrgent": true
+}
+
+### Update Task with Changed By
+PUT {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+    "title": "Updated Task Title",
+    "status": "COMPLETED",
+    "keterangan": "Task completed with modified requirements",
+    "changedBy": "John Smith"
+}
+
+### Update Task Status Only
+PUT {{baseUrl}}/tasks/7
+Content-Type: application/json
+
+{
+    "status": "COMPLETED",
+    "changedBy": "Jane Doe"
+}
+
+
+### Update Status
+PUT {{baseUrl}}/tasks/13
+Content-Type: application/json
+
+{
+    "status": "COMPLETED"
+}
+
+### Delete Task
+DELETE {{baseUrl}}/tasks/1
+
+### Get Tasks by Status (INPROGRESS)
+GET {{baseUrl}}/tasks/status/INPROGRESS
+
+### Get Tasks by Status (DONE)
+GET {{baseUrl}}/tasks/status/DONE
+
+### Get Tasks by Category (MEMO)
+GET {{baseUrl}}/tasks/category/MEMO
+
+### Get Tasks by Category (TASK)
+GET {{baseUrl}}/tasks/category/TASK
+
+### Get Tasks by Category (LAPORAN)
+GET {{baseUrl}}/tasks/category/LAPORAN
+
+### Get Tasks by Category (TEMUAN)
+GET {{baseUrl}}/tasks/category/TEMUAN

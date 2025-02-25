@@ -6,7 +6,14 @@ const {
 } = require("../utils/responseHandler");
 
 const VALID_STATUSES = ["COMPLETED", "CANCEL", "INPROGRESS", "BACKLOG"];
-const VALID_CATEGORIES = ["MEMO", "TASK", "LAPORAN", "JASA", "MATERIAL"];
+const VALID_CATEGORIES = [
+  "MEMO",
+  "TASK",
+  "LAPORAN",
+  "JASA",
+  "MATERIAL",
+  "TEMUAN",
+];
 
 const taskController = {
   /**
@@ -42,7 +49,8 @@ const taskController = {
    */
   createTask: async (req, res) => {
     try {
-      const { title, category, status, keterangan, sendWa } = req.body;
+      const { title, category, status, keterangan, sendWa, changedBy } =
+        req.body;
 
       // Validate required fields
       if (!title) {
@@ -67,13 +75,17 @@ const taskController = {
         );
       }
 
-      const task = await taskService.createTask({
-        title,
-        category,
-        status,
-        keterangan,
-        sendWa,
-      });
+      const task = await taskService.createTask(
+        {
+          title,
+          category,
+          status,
+          keterangan,
+          sendWa,
+        },
+        changedBy || "System"
+      );
+
       return successResponse(res, 201, "Task created successfully", task);
     } catch (error) {
       return errorResponse(res, 500, error.message);
@@ -86,7 +98,7 @@ const taskController = {
   updateTask: async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, category, status, keterangan } = req.body;
+      const { title, category, status, keterangan, changedBy } = req.body;
 
       // Validate category if provided
       if (category && !VALID_CATEGORIES.includes(category)) {
@@ -106,12 +118,16 @@ const taskController = {
         );
       }
 
-      const task = await taskService.updateTask(parseInt(id), {
-        title,
-        category,
-        status,
-        keterangan,
-      });
+      const task = await taskService.updateTask(
+        parseInt(id),
+        {
+          title,
+          category,
+          status,
+          keterangan,
+        },
+        changedBy || "System"
+      );
 
       if (!task) {
         return errorResponse(res, 404, "Task not found");

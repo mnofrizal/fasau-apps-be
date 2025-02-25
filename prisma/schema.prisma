@@ -33,6 +33,7 @@ enum TaskCategory {
   LAPORAN
   JASA
   MATERIAL
+  TEMUAN
 }
 
 model Task {
@@ -46,7 +47,31 @@ model Task {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
+  // Relation fields
+  taskReport   TaskReport? @relation("TaskFromReport", fields: [taskReportId], references: [id])
+  taskReportId Int?        @unique
+
+  // Status history
+  statusHistory StatusHistory[] @relation("TaskStatusHistory")
+
   @@map("tasks")
+}
+
+model StatusHistory {
+  id        Int        @id @default(autoincrement())
+  status    TaskStatus
+  notes     String?    @db.Text
+  changedBy String? // Name/identifier of person who changed the status
+  createdAt DateTime   @default(now())
+
+  // Relations (both optional)
+  task   Task? @relation("TaskStatusHistory", fields: [taskId], references: [id], onDelete: Cascade)
+  taskId Int?
+
+  report   TaskReport? @relation("ReportStatusHistory", fields: [reportId], references: [id], onDelete: Cascade)
+  reportId Int?
+
+  @@map("status_history")
 }
 
 model WhatsappConfig {
@@ -108,6 +133,13 @@ model TaskReport {
   status      TaskStatus         @default(BACKLOG)
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
+
+  // Relation fields
+  escalatedToTask Task?   @relation("TaskFromReport")
+  isEscalated     Boolean @default(false)
+
+  // Status history
+  statusHistory StatusHistory[] @relation("ReportStatusHistory")
 
   @@map("task_reports")
 }
