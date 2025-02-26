@@ -24,6 +24,7 @@ const taskService = {
             category: true,
             subCategory: true,
             evidence: true,
+            tindakan: true,
           },
         },
         statusHistory: {
@@ -59,6 +60,7 @@ const taskService = {
             category: true,
             subCategory: true,
             evidence: true,
+            tindakan: true,
           },
         },
         statusHistory: {
