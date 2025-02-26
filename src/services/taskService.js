@@ -23,6 +23,7 @@ const taskService = {
             phone: true,
             category: true,
             subCategory: true,
+            evidence: true,
           },
         },
         statusHistory: {

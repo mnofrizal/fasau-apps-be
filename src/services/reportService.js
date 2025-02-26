@@ -115,7 +115,7 @@ const reportService = {
               : report.description,
           category: "TEMUAN",
           status: "BACKLOG",
-          keterangan: `Kategori: ${report.category}\nPelapor: ${report.pelapor} (${report.phone})\n\nDeskripsi: ${report.description}`,
+          keterangan: `Pelapor: ${report.pelapor}\n\nDeskripsi: ${report.description}`,
           // isUrgent: true,
           taskReport: {
             connect: { id: report.id },
@@ -228,7 +228,7 @@ const reportService = {
               : report.description,
           category: "TEMUAN",
           status: "BACKLOG",
-          keterangan: `Kategori: ${report.category}\nPelapor: ${report.pelapor} (${report.phone})\n\nDeskripsi: ${report.description}`,
+          keterangan: `Pelapor: ${report.pelapor}\n\nDeskripsi: ${report.description}`,
           // isUrgent: true,
           taskReport: {
             connect: { id: report.id },
@@ -487,7 +487,7 @@ const reportService = {
         status: "BACKLOG",
 
         // Include additional details in keterangan
-        keterangan: `Kategori: ${report.category}\nPelapor: ${report.pelapor} (${report.phone})\n\nDeskripsi: ${report.description}`,
+        keterangan: `Pelapor: ${report.pelapor}\n\nDeskripsi: ${report.description}`,
 
         // Set urgency flag for TEMUAN
         // isUrgent: report.subCategory === "TEMUAN",
