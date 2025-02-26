@@ -1,0 +1,70 @@
+@baseUrl = http://localhost:3900/api/v1/inventory
+
+### Get all items
+GET {{baseUrl}}/items
+
+### Record batch receiving with auto-creation (no need to create items first)
+POST {{baseUrl}}/movements/batch
+Content-Type: application/json
+
+{
+    "type": "IN",
+    "reference": "0131/B12/2024",
+    "notes": "Office furniture and equipment delivery",
+    "createdBy": "John Doe",
+    "items": [
+        {
+            "name": "Chair",
+            "quantity": 3,
+            "location": "Storage Room A",
+            "notes": "Office chairs"
+        },
+        {
+            "name": "Table",
+            "quantity": 2,
+            "location": "Storage Room B",
+            "notes": "Office desks"
+        },
+        {
+            "name": "Handphone",
+            "quantity": 1,
+            "location": "IT Storage",
+            "notes": "Office phone"
+        }
+    ]
+}
+
+### Get all transactions for this PO
+GET {{baseUrl}}/transactions/reference/0131/B12/2024
+
+### Get all transactions
+GET {{baseUrl}}/transactions
+
+### Search for specific item
+GET {{baseUrl}}/items/name/Chair
+
+### Record stock OUT
+POST {{baseUrl}}/movements/batch
+Content-Type: application/json
+
+{
+    "type": "OUT",
+    "reference": "OUT/MKT/2024/001",
+    "notes": "Marketing department allocation",
+    "createdBy": "Jane Smith",
+    "items": [
+        {
+            "name": "Chair",
+            "quantity": 1,
+            "notes": "For new employee"
+        },
+        {
+            "name": "Table",
+            "quantity": 1,
+            "notes": "For new employee"
+        }
+    ]
+}
+
+### Get inventory status
+GET {{baseUrl}}/items
