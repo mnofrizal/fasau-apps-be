@@ -115,7 +115,7 @@ const reportService = {
               : report.description,
           category: "TEMUAN",
           status: "BACKLOG",
-          keterangan: `Pelapor: ${report.pelapor}\n\nDeskripsi: ${report.description}`,
+          keterangan: `${report.description}`,
           // isUrgent: true,
           taskReport: {
             connect: { id: report.id },
@@ -123,7 +123,7 @@ const reportService = {
           statusHistory: {
             create: {
               status: "BACKLOG",
-              notes: `Task created from report #${report.id} with status BACKLOG`,
+              notes: `Tugas dibuat dari laporan #${report.id} dengan status BACKLOG`,
               changedBy: changedBy,
             },
           },
@@ -138,7 +138,7 @@ const reportService = {
           statusHistory: {
             create: {
               status: report.status,
-              notes: `Report escalated to task #${task.id}`,
+              notes: `Laporan di-escalate menjadi tugas #${task.id}`,
               changedBy: changedBy,
             },
           },
@@ -208,7 +208,7 @@ const reportService = {
       await prisma.statusHistory.create({
         data: {
           status: reportData.status,
-          notes: `Status changed from ${existingReport.status} to ${reportData.status}`,
+          notes: `Status diubah dari ${existingReport.status} menjadi ${reportData.status}`,
           changedBy: changedBy,
           report: {
             connect: { id: report.id },
@@ -228,7 +228,7 @@ const reportService = {
               : report.description,
           category: "TEMUAN",
           status: "BACKLOG",
-          keterangan: `Pelapor: ${report.pelapor}\n\nDeskripsi: ${report.description}`,
+          keterangan: `${report.description}`,
           // isUrgent: true,
           taskReport: {
             connect: { id: report.id },
@@ -236,7 +236,7 @@ const reportService = {
           statusHistory: {
             create: {
               status: "BACKLOG",
-              notes: `Task created from report #${report.id} with status BACKLOG`,
+              notes: `Tugas dibuat dari laporan #${report.id} dengan status BACKLOG`,
               changedBy: changedBy,
             },
           },
@@ -251,7 +251,7 @@ const reportService = {
           statusHistory: {
             create: {
               status: report.status,
-              notes: `Report escalated to task #${task.id} after being marked as TEMUAN`,
+              notes: `Laporan di-escalate menjadi tugas #${task.id} setelah ditandai sebagai TEMUAN`,
               changedBy: changedBy,
             },
           },
@@ -487,7 +487,7 @@ const reportService = {
         status: "BACKLOG",
 
         // Include additional details in keterangan
-        keterangan: `Pelapor: ${report.pelapor}\n\nDeskripsi: ${report.description}`,
+        keterangan: `${report.description}`,
 
         // Set urgency flag for TEMUAN
         // isUrgent: report.subCategory === "TEMUAN",
@@ -501,7 +501,7 @@ const reportService = {
         statusHistory: {
           create: {
             status: "BACKLOG",
-            notes: `Task created from report #${report.id} with status BACKLOG`,
+            notes: `Tugas dibuat dari laporan #${report.id} dengan status BACKLOG`,
             changedBy: changedBy,
           },
         },
@@ -519,7 +519,7 @@ const reportService = {
         statusHistory: {
           create: {
             status: report.status,
-            notes: `Report escalated to task #${task.id}`,
+            notes: `Laporan di-escalate menjadi tugas #${task.id}`,
             changedBy: changedBy,
           },
         },
