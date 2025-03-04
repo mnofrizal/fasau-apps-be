@@ -10,6 +10,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Inventory Models
+enum TransactionType {
+  IN
+  OUT
+}
+
+model InventoryItem {
+  id        Int      @id @default(autoincrement())
+  name      String
+  category  String   @default("OTHER")
+  quantity  Int      @default(0)
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  transactionItems TransactionItem[]
+
+  @@map("inventory_items")
+}
+
+model InventoryTransaction {
+  id        Int             @id @default(autoincrement())
+  type      TransactionType
+  reference String // PO number or reference number
+  notes     String?         @db.Text
+  createdBy String
+  createdAt DateTime        @default(now())
+
+  // Relations
+  items TransactionItem[]
+
+  @@map("inventory_transactions")
+}
+
+model TransactionItem {
+  id       Int     @id @default(autoincrement())
+  quantity Int
+  notes    String? @db.Text
+
+  // Relations
+  transaction   InventoryTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  transactionId Int
+
+  item   InventoryItem @relation(fields: [itemId], references: [id])
+  itemId Int
+
+  @@map("transaction_items")
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique

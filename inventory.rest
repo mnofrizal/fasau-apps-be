@@ -1,70 +1,112 @@
-@baseUrl = http://localhost:3900/api/v1/inventory
+### Variables
+@baseUrl = http://localhost:3900/api/v1
 
-### Get all items
-GET {{baseUrl}}/items
+### ==================== Inventory Routes ====================
 
-### Record batch receiving with auto-creation (no need to create items first)
-POST {{baseUrl}}/movements/batch
+### Get All Inventory Items
+GET {{baseUrl}}/inventory/items
+
+### Get Items by Category
+GET {{baseUrl}}/inventory/items/category/CHAIR
+
+### Get Items by Custom Category
+GET {{baseUrl}}/inventory/items/category/Power%20Generator
+
+### Get Item by ID
+GET {{baseUrl}}/inventory/items/1
+
+### Record Stock IN (Receiving Items)
+POST {{baseUrl}}/inventory/movements/batch
 Content-Type: application/json
 
 {
-    "type": "IN",
-    "reference": "0131/B12/2024",
-    "notes": "Office furniture and equipment delivery",
-    "createdBy": "John Doe",
-    "items": [
-        {
-            "name": "Chair",
-            "quantity": 3,
-            "location": "Storage Room A",
-            "notes": "Office chairs"
-        },
-        {
-            "name": "Table",
-            "quantity": 2,
-            "location": "Storage Room B",
-            "notes": "Office desks"
-        },
-        {
-            "name": "Handphone",
-            "quantity": 1,
-            "location": "IT Storage",
-            "notes": "Office phone"
-        }
-    ]
+  "type": "IN",
+  "reference": "PO/2024/001",
+  "notes": "Office furniture delivery",
+  "createdBy": "John Doe",
+  "items": [
+    {
+      "name": "Kursi Informa GY7 High-Back",
+      "category": "KK",
+      "quantity": 3,
+      "location": "Storage Room A",
+      "notes": "Kursi ergonomis untuk kantor"
+    }
+    
+  ]
 }
 
-### Get all transactions for this PO
-GET {{baseUrl}}/transactions/reference/0131/B12/2024
-
-### Get all transactions
-GET {{baseUrl}}/transactions
-
-### Search for specific item
-GET {{baseUrl}}/items/name/Chair
-
-### Record stock OUT
-POST {{baseUrl}}/movements/batch
+### Record Stock OUT (Assignment)
+POST {{baseUrl}}/inventory/movements/batch
 Content-Type: application/json
 
 {
-    "type": "OUT",
-    "reference": "OUT/MKT/2024/001",
-    "notes": "Marketing department allocation",
-    "createdBy": "Jane Smith",
-    "items": [
-        {
-            "name": "Chair",
-            "quantity": 1,
-            "notes": "For new employee"
-        },
-        {
-            "name": "Table",
-            "quantity": 1,
-            "notes": "For new employee"
-        }
-    ]
+  "type": "OUT",
+  "reference": "OUT/IT/2024/001",
+  "notes": "IT equipment assignment",
+  "createdBy": "Jane Smith",
+  "items": [
+    {
+      "name": "Laptop Dell Latitude 5420",
+      "category": "COMPUTER",
+      "quantity": 1,
+      "notes": "Laptop untuk developer baru"
+    },
+    {
+      "name": "Monitor Dell P2419H 24-inch",
+      "category": "ELECTRONIC",
+      "quantity": 2,
+      "notes": "Monitor untuk setup dual screen"
+    }
+  ]
 }
 
-### Get inventory status
-GET {{baseUrl}}/items
+### Example with Custom Categories
+POST {{baseUrl}}/inventory/movements/batch
+Content-Type: application/json
+
+{
+  "type": "IN",
+  "reference": "PO/2024/002",
+  "notes": "New equipment delivery",
+  "createdBy": "John Doe",
+  "items": [
+    {
+      "name": "Genset 10KVA",
+      "category": "Power Generator",
+      "quantity": 1,
+      "location": "Power Room",
+      "notes": "Backup power supply"
+    },
+    {
+      "name": "UPS 3000VA",
+      "category": "Power Supply",
+      "quantity": 2,
+      "location": "Server Room",
+      "notes": "For server backup power"
+    }
+  ]
+}
+
+### Note on Categories:
+# Categories are dynamic and will be created automatically when new items are added
+# Some suggested categories as examples:
+# - Kursi (Chairs)
+# - Meja (Tables)
+# - Komputer (Computers)
+# - Printer
+# - Power Generator
+# - Power Supply
+# - Network Equipment
+# - Storage
+# - Electronics
+# But you can create any new category as needed!
+
+### Get All Transactions
+GET {{baseUrl}}/inventory/transactions
+
+### Get Transaction by ID
+GET {{baseUrl}}/inventory/transactions/1
+
+### Get Transaction by Reference
+GET {{baseUrl}}/inventory/transactions/reference/PO%2F2024%2F001

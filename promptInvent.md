@@ -92,23 +92,23 @@ Shows all items with:
 - Location
 - Recent transactions
 
-#### View PO Details
+#### View transaction Details
 
-**Endpoint:** GET `/api/v1/inventory/transactions/reference/{PO-NUMBER}`
+**Endpoint:** GET `/api/v1/inventory/transactions/{id}`
 
-Example: `/api/v1/inventory/transactions/reference/0131/B12/2024`
+Example: `/api/v1/inventory/transactions/reference/HY7F98`
 
 Shows:
 
-- All items in the PO
+- All items in the transactions
 - Quantities received
 - Receiving details
 
 #### Check Item History
 
-**Endpoint:** GET `/api/v1/inventory/items/name/{ITEM-NAME}`
+**Endpoint:** GET `/api/v1/inventory/items/{id}`
 
-Example: `/api/v1/inventory/items/name/Chair`
+Example: `/api/v1/inventory/items/76`
 
 Shows:
 
@@ -182,6 +182,14 @@ Shows complete transaction history across all items.
   ]
 }
 ```
+
+## Error Handling
+
+The system prevents:
+
+- Negative stock levels
+- Invalid transactions
+- Duplicate references
 
 ## Best Practices
 
