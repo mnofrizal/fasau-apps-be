@@ -11,6 +11,9 @@ router.post("/items", inventoryController.createItem);
 // Get items by category
 router.get("/items/category/:category", inventoryController.getItemsByCategory);
 
+// Get items by name (case insensitive)
+router.get("/items/search/:name", inventoryController.getItemsByName);
+
 // Get item by ID
 router.get("/items/:id", inventoryController.getItemById);
 

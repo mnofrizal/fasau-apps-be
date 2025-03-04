@@ -196,6 +196,38 @@ const inventoryService = {
   },
 
   /**
+   * Get inventory items by name (case insensitive)
+   * @param {string} name - Item name to search for
+   * @returns {Promise<Array>} Array of matching inventory items
+   */
+  getItemsByName: async (name) => {
+    return await prisma.inventoryItem.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+      },
+      orderBy: {
+        name: "asc",
+      },
+      include: {
+        transactionItems: {
+          include: {
+            transaction: true,
+          },
+          orderBy: {
+            transaction: {
+              createdAt: "desc",
+            },
+          },
+          take: 5, // Include last 5 transactions
+        },
+      },
+    });
+  },
+
+  /**
    * Create a new inventory item
    * @param {Object} data - Item data including name, category, and location
    * @returns {Promise<Object>} Created item

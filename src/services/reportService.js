@@ -1,7 +1,53 @@
 const { PrismaClient } = require("@prisma/client");
 const socketUtils = require("../utils/socket");
 const prisma = new PrismaClient();
-const { TaskCategory } = require("@prisma/client");
+const { TaskCategory, ItemUnit } = require("@prisma/client");
+
+/**
+ * Helper function to find or create inventory items
+ * @param {Array} materials - Array of material items with name, category, etc.
+ * @returns {Promise<Array>} Array of processed inventory items with IDs
+ */
+const processInventoryItems = async (materials) => {
+  if (!materials || !Array.isArray(materials)) return [];
+
+  const processedItems = await Promise.all(
+    materials.map(async (item) => {
+      // Find existing item
+      let inventoryItem = await prisma.inventoryItem.findFirst({
+        where: {
+          name: item.name,
+          category: item.category,
+        },
+      });
+
+      // If not found, create new item with quantity 0
+      if (!inventoryItem) {
+        inventoryItem = await prisma.inventoryItem.create({
+          data: {
+            name: item.name,
+            category: item.category,
+            quantity: 0,
+            unit: item.unit,
+            location: item.location || "Gudang Eks Golf",
+          },
+        });
+      }
+
+      // Return the item with requested quantity
+      return {
+        id: inventoryItem.id,
+        name: inventoryItem.name,
+        category: inventoryItem.category,
+        quantity: item.quantity,
+        unit: inventoryItem.unit,
+        location: item.location || inventoryItem.location,
+      };
+    })
+  );
+
+  return processedItems;
+};
 
 const reportService = {
   /**
@@ -83,10 +129,18 @@ const reportService = {
    * @returns {Promise<Object>} Created report object
    */
   createReport: async (reportData, changedBy = "System") => {
-    // First create the report with its status history
+    // Process materials if provided
+    let processedMaterials = [];
+    if (reportData.material) {
+      processedMaterials = await processInventoryItems(reportData.material);
+    }
+
+    // First create the report with its status history and processed materials
     const report = await prisma.taskReport.create({
       data: {
         ...reportData,
+        material:
+          processedMaterials.length > 0 ? processedMaterials : undefined,
         statusHistory: {
           create: {
             status: reportData.status || "BACKLOG",
@@ -169,6 +223,13 @@ const reportService = {
    * @returns {Promise<Object>} Updated report object
    */
   updateReport: async (id, reportData, changedBy = "System") => {
+    // Process materials if provided
+    let processedMaterials = [];
+    if (reportData.material) {
+      processedMaterials = await processInventoryItems(reportData.material);
+      reportData.material = processedMaterials;
+    }
+
     // Get the existing report to check current status and subCategory
     const existingReport = await prisma.taskReport.findUnique({
       where: { id },

@@ -101,9 +101,23 @@ const inventoryController = {
   },
 
   /**
-   * Get transaction by reference number
-   * GET /api/v1/inventory/transactions/reference/:reference
+   * Get items by name (case insensitive)
+   * GET /api/v1/inventory/items/search/:name
    */
+  getItemsByName: async (req, res) => {
+    try {
+      const items = await inventoryService.getItemsByName(req.params.name);
+      responseHandler.successResponse(
+        res,
+        200,
+        "Items retrieved successfully",
+        items
+      );
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
+
   /**
    * Get items by category
    * GET /api/v1/inventory/items/category/:category

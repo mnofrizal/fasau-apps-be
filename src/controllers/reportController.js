@@ -119,7 +119,7 @@ const reportController = {
         }
 
         for (const item of material) {
-          if (!item.name || !item.category || !item.quantity || !item.unit) {
+          if (!item.name || !item.quantity || !item.unit) {
             return validationErrorResponse(
               res,
               "Each material item must have name, category, quantity, and unit"
@@ -187,7 +187,7 @@ const reportController = {
         }
 
         for (const item of material) {
-          if (!item.name || !item.category || !item.quantity || !item.unit) {
+          if (!item.name || !item.quantity || !item.unit) {
             return validationErrorResponse(
               res,
               "Each material item must have name, category, quantity, and unit"

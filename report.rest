@@ -10,6 +10,9 @@ GET {{baseUrl}}/report
 GET {{baseUrl}}/report/16
 
 ### Create TEMUAN Report with Materials (Auto-escalates to Task)
+# Note: Materials will be matched with inventory items. If an item doesn't exist,
+# it will be created in inventory with quantity 0. This allows tracking what
+# materials are needed without reducing inventory stock.
 POST {{baseUrl}}/report
 Content-Type: application/json
 
@@ -20,21 +23,22 @@ Content-Type: application/json
     "phone": "+62812-3456-7891",
     "category": "PM",
     "subCategory": "TEMUAN",
-    "tindakan":"Perbaikan",
+    "tindakan": "Perbaikan",
     "material": [
         {
-            "name": "Water Sealant",
-            "category": "BUILDING",
-            "quantity": 2,
-            "unit": "kaleng",
-            "location": "Storage Room A"
+             "id": 8,
+            "name": "Water Sealant2",       
+            "quantity": 2,                
+            "unit": "kaleng",              
+            "location": "Storage Room A"     
         },
         {
-            "name": "Pipe Joint",
-            "category": "PLUMBING",
-            "quantity": 4,
-            "unit": "pcs",
-            "location": "Storage Room B"
+             "id": 8,
+            "name": "Pipe Joint",          
+        
+            "quantity": 4,                  
+            "unit": "pcs"
+    
         }
     ],
     "changedBy": "John Engineer"
@@ -68,6 +72,10 @@ Content-Type: application/json
 }
 
 ### Update Report to TEMUAN with Materials (Will Auto-escalate)
+# Adding materials to existing report - same behavior as create:
+# - Matches with inventory items
+# - Creates new items if not found (qty=0)
+# - Records quantities needed without affecting stock
 PUT {{baseUrl}}/report/1
 Content-Type: application/json
 

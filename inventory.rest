@@ -12,8 +12,6 @@ Content-Type: application/json
 
 {
   "name": "New Office Chair1",
-  "category": "CHAIR",
-  "quantity": 1,
   "unit": "pcs"
 }
 # Notes for Create Item:
@@ -61,6 +59,13 @@ Content-Type: application/json
 ### Get Items by Category
 GET {{baseUrl}}/inventory/items/category/CHAIR
 
+### Search Items by Name (Case Insensitive)
+# Will find items containing "chair" regardless of case:
+# e.g., "Office Chair", "CHAIR executive", "Gaming chair"
+GET {{baseUrl}}/inventory/items/search/chair
+
+### Search Items by Name - Example with Mixed Case
+GET {{baseUrl}}/inventory/items/search/OfFiCe
 
 ### Get Item by ID
 GET {{baseUrl}}/inventory/items/1
