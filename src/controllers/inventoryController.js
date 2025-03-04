@@ -124,6 +124,24 @@ const inventoryController = {
     }
   },
 
+  /**
+   * Create new item
+   * POST /api/v1/inventory/items
+   */
+  createItem: async (req, res) => {
+    try {
+      const item = await inventoryService.createItem(req.body);
+      responseHandler.successResponse(
+        res,
+        201,
+        "Item created successfully",
+        item
+      );
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
+
   getTransactionByReference: async (req, res) => {
     try {
       const transaction = await inventoryService.getTransactionByReference(
@@ -136,6 +154,86 @@ const inventoryController = {
         res,
         200,
         "Transaction retrieved successfully",
+        transaction
+      );
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
+
+  /**
+   * Update item
+   * PUT /api/v1/inventory/items/:id
+   */
+  updateItem: async (req, res) => {
+    try {
+      const item = await inventoryService.updateItem(
+        parseInt(req.params.id),
+        req.body
+      );
+      responseHandler.successResponse(
+        res,
+        200,
+        "Item updated successfully",
+        item
+      );
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
+
+  /**
+   * Delete item
+   * DELETE /api/v1/inventory/items/:id
+   */
+  deleteItem: async (req, res) => {
+    try {
+      const item = await inventoryService.deleteItem(parseInt(req.params.id));
+      responseHandler.successResponse(
+        res,
+        200,
+        "Item deleted successfully",
+        item
+      );
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
+
+  /**
+   * Update transaction
+   * PUT /api/v1/inventory/transactions/:id
+   */
+  updateTransaction: async (req, res) => {
+    try {
+      const transaction = await inventoryService.updateTransaction(
+        parseInt(req.params.id),
+        req.body
+      );
+      responseHandler.successResponse(
+        res,
+        200,
+        "Transaction updated successfully",
+        transaction
+      );
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
+
+  /**
+   * Delete transaction
+   * DELETE /api/v1/inventory/transactions/:id
+   */
+  deleteTransaction: async (req, res) => {
+    try {
+      const transaction = await inventoryService.deleteTransaction(
+        parseInt(req.params.id)
+      );
+      responseHandler.successResponse(
+        res,
+        200,
+        "Transaction deleted successfully",
         transaction
       );
     } catch (error) {

@@ -67,6 +67,7 @@ const reportController = {
         subCategory,
         tindakan,
         status,
+        material,
         changedBy,
       } = req.body;
 
@@ -111,6 +112,29 @@ const reportController = {
         );
       }
 
+      // Validate material if provided
+      if (material) {
+        if (!Array.isArray(material)) {
+          return validationErrorResponse(res, "Material must be an array");
+        }
+
+        for (const item of material) {
+          if (!item.name || !item.category || !item.quantity || !item.unit) {
+            return validationErrorResponse(
+              res,
+              "Each material item must have name, category, quantity, and unit"
+            );
+          }
+
+          if (typeof item.quantity !== "number" || item.quantity <= 0) {
+            return validationErrorResponse(
+              res,
+              "Material quantity must be a positive number"
+            );
+          }
+        }
+      }
+
       const report = await reportService.createReport(
         {
           evidence,
@@ -121,6 +145,7 @@ const reportController = {
           subCategory,
           tindakan,
           status,
+          material,
         },
         changedBy || pelapor // Default to reporter's name if changedBy not provided
       );
@@ -146,12 +171,36 @@ const reportController = {
         subCategory,
         tindakan,
         status,
+        material,
         changedBy,
       } = req.body;
 
       // Validate phone number if provided
       if (phone && !phone.match(/^[0-9+\-\s()]+$/)) {
         return validationErrorResponse(res, "Invalid phone number format");
+      }
+
+      // Validate material if provided
+      if (material) {
+        if (!Array.isArray(material)) {
+          return validationErrorResponse(res, "Material must be an array");
+        }
+
+        for (const item of material) {
+          if (!item.name || !item.category || !item.quantity || !item.unit) {
+            return validationErrorResponse(
+              res,
+              "Each material item must have name, category, quantity, and unit"
+            );
+          }
+
+          if (typeof item.quantity !== "number" || item.quantity <= 0) {
+            return validationErrorResponse(
+              res,
+              "Material quantity must be a positive number"
+            );
+          }
+        }
       }
 
       // Validate category if provided
@@ -193,6 +242,7 @@ const reportController = {
           subCategory,
           tindakan,
           status,
+          material,
         },
         changedBy || "System"
       );

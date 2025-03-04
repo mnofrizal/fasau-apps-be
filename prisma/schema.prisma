@@ -16,14 +16,33 @@ enum TransactionType {
   OUT
 }
 
+enum ItemUnit {
+  pcs
+  box
+  kg
+  meter
+  roll
+  liter
+  pack
+  set
+  buah
+  unit
+  lembar
+  pal
+  galon
+  biji
+  kaleng
+}
+
 model InventoryItem {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  category  String   @default("OTHER")
-  quantity  Int      @default(0)
+  category  String    @default("OTHER")
+  quantity  Int       @default(0)
+  unit      ItemUnit?
   location  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   // Relations
   transactionItems TransactionItem[]
@@ -181,6 +200,7 @@ model TaskReport {
   subCategory ReportSubCategory? @default(LAPORAN)
   tindakan    String?            @db.Text
   status      TaskStatus         @default(BACKLOG)
+  material    Json? // Array of material items
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
 

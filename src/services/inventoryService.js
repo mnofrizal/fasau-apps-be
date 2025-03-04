@@ -73,7 +73,8 @@ const inventoryService = {
               name: item.name,
               category: item.category || "OTHER",
               quantity: 0,
-              location: item.location,
+              location: item.location || "Gudang Eks Golf",
+              ...(item.unit && { unit: item.unit }), // Only include unit if provided
             },
           });
         }
@@ -191,6 +192,146 @@ const inventoryService = {
           },
         },
       },
+    });
+  },
+
+  /**
+   * Create a new inventory item
+   * @param {Object} data - Item data including name, category, and location
+   * @returns {Promise<Object>} Created item
+   * @throws {Error} If item with same name already exists
+   */
+  createItem: async (data) => {
+    // Check for existing item with same name
+    const existingItem = await prisma.inventoryItem.findFirst({
+      where: {
+        name: data.name,
+      },
+    });
+
+    if (existingItem) {
+      throw new Error(`Item with name "${data.name}" already exists`);
+    }
+
+    return await prisma.inventoryItem.create({
+      data: {
+        name: data.name,
+        category: data.category || "OTHER",
+        quantity: data.quantity || 0,
+        location: data.location || "Gudang Eks Golf",
+        ...(data.unit && { unit: data.unit }), // Only include unit if provided
+      },
+    });
+  },
+
+  /**
+   * Update inventory item
+   * @param {number} id - Item ID
+   * @param {Object} data - Updated item data
+   * @returns {Promise<Object>} Updated item
+   */
+  updateItem: async (id, data) => {
+    return await prisma.inventoryItem.update({
+      where: { id },
+      data: {
+        name: data.name,
+        category: data.category,
+        location: data.location,
+        ...(data.unit && { unit: data.unit }), // Only include unit if provided
+      },
+    });
+  },
+
+  /**
+   * Delete inventory item
+   * @param {number} id - Item ID
+   * @returns {Promise<Object>} Deleted item
+   */
+  deleteItem: async (id) => {
+    // Check if item has any transactions
+    const itemWithTransactions = await prisma.inventoryItem.findUnique({
+      where: { id },
+      include: {
+        transactionItems: true,
+      },
+    });
+
+    if (itemWithTransactions?.transactionItems.length > 0) {
+      throw new Error("Cannot delete item with existing transactions");
+    }
+
+    return await prisma.inventoryItem.delete({
+      where: { id },
+    });
+  },
+
+  /**
+   * Update transaction
+   * @param {number} id - Transaction ID
+   * @param {Object} data - Updated transaction data
+   * @returns {Promise<Object>} Updated transaction
+   */
+  updateTransaction: async (id, data) => {
+    return await prisma.inventoryTransaction.update({
+      where: { id },
+      data: {
+        reference: data.reference,
+        notes: data.notes,
+      },
+      include: {
+        items: {
+          include: {
+            item: true,
+          },
+        },
+      },
+    });
+  },
+
+  /**
+   * Delete transaction
+   * @param {number} id - Transaction ID
+   * @returns {Promise<Object>} Deleted transaction
+   */
+  deleteTransaction: async (id) => {
+    return await prisma.$transaction(async (tx) => {
+      // Get the transaction with items
+      const transaction = await tx.inventoryTransaction.findUnique({
+        where: { id },
+        include: {
+          items: {
+            include: {
+              item: true,
+            },
+          },
+        },
+      });
+
+      if (!transaction) {
+        throw new Error("Transaction not found");
+      }
+
+      // Reverse the quantity changes
+      for (const transactionItem of transaction.items) {
+        const quantityChange =
+          transaction.type === "IN"
+            ? -transactionItem.quantity // If it was IN, subtract
+            : transactionItem.quantity; // If it was OUT, add back
+
+        await tx.inventoryItem.update({
+          where: { id: transactionItem.item.id },
+          data: {
+            quantity: {
+              increment: quantityChange,
+            },
+          },
+        });
+      }
+
+      // Delete the transaction (cascade will handle transactionItems)
+      return await tx.inventoryTransaction.delete({
+        where: { id },
+      });
     });
   },
 };

@@ -5,6 +5,9 @@ const inventoryController = require("../controllers/inventoryController");
 // Get all inventory items
 router.get("/items", inventoryController.getAllItems);
 
+// Create new item
+router.post("/items", inventoryController.createItem);
+
 // Get items by category
 router.get("/items/category/:category", inventoryController.getItemsByCategory);
 
@@ -25,5 +28,17 @@ router.get(
   "/transactions/reference/:reference",
   inventoryController.getTransactionByReference
 );
+
+// Update item
+router.put("/items/:id", inventoryController.updateItem);
+
+// Delete item
+router.delete("/items/:id", inventoryController.deleteItem);
+
+// Update transaction
+router.put("/transactions/:id", inventoryController.updateTransaction);
+
+// Delete transaction
+router.delete("/transactions/:id", inventoryController.deleteTransaction);
 
 module.exports = router;

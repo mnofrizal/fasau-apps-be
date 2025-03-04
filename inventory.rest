@@ -6,11 +6,61 @@
 ### Get All Inventory Items
 GET {{baseUrl}}/inventory/items
 
+### Create New Item
+POST {{baseUrl}}/inventory/items
+Content-Type: application/json
+
+{
+  "name": "New Office Chair1",
+  "category": "CHAIR",
+  "quantity": 1,
+  "unit": "pcs"
+}
+# Notes for Create Item:
+# - Item name must be unique, duplicate names will be rejected
+# - Location defaults to "Gudang Eks Golf" if not specified
+# - Category defaults to "OTHER" if not specified
+# - Quantity defaults to 0 if not specified
+# - Unit is optional, can be one of:
+#   - pcs (pieces)
+#   - box
+#   - kg (kilograms)
+#   - meter
+#   - roll
+#   - liter
+#   - pack
+#   - set
+#   - buah
+#   - unit
+#   - lembar
+#   - pal
+#   - galon
+#   - biji
+
+### Create Item with Custom Category, Location and Unit
+POST {{baseUrl}}/inventory/items
+Content-Type: application/json
+
+{
+  "name": "Network Switch 24-Port",
+  "category": "Network Equipment",
+  "quantity": 2,
+  "location": "Server Room",
+  "unit": "unit"
+}
+
+### Example - Try to Create Duplicate Item (Will Fail)
+POST {{baseUrl}}/inventory/items
+Content-Type: application/json
+
+{
+  "name": "New Office Chair",
+  "category": "CHAIR"
+}
+
 ### Get Items by Category
 GET {{baseUrl}}/inventory/items/category/CHAIR
 
-### Get Items by Custom Category
-GET {{baseUrl}}/inventory/items/category/Power%20Generator
 
 ### Get Item by ID
 GET {{baseUrl}}/inventory/items/1
@@ -26,13 +76,13 @@ Content-Type: application/json
   "createdBy": "John Doe",
   "items": [
     {
-      "name": "Kursi Informa GY7 High-Back",
-      "category": "KK",
+      "name": "New Office Chair",
+      "category": "CHAIR",
       "quantity": 3,
-      "location": "Storage Room A",
+      "location": "Storage Room B",
+      "unit": "pcs",
       "notes": "Kursi ergonomis untuk kantor"
     }
-    
   ]
 }
 
@@ -50,12 +100,14 @@ Content-Type: application/json
       "name": "Laptop Dell Latitude 5420",
       "category": "COMPUTER",
       "quantity": 1,
+      "unit": "unit",
       "notes": "Laptop untuk developer baru"
     },
     {
       "name": "Monitor Dell P2419H 24-inch",
       "category": "ELECTRONIC",
       "quantity": 2,
+      "unit": "unit",
       "notes": "Monitor untuk setup dual screen"
     }
   ]
@@ -75,6 +127,7 @@ Content-Type: application/json
       "name": "Genset 10KVA",
       "category": "Power Generator",
       "quantity": 1,
+      "unit": "unit",
       "location": "Power Room",
       "notes": "Backup power supply"
     },
@@ -82,6 +135,7 @@ Content-Type: application/json
       "name": "UPS 3000VA",
       "category": "Power Supply",
       "quantity": 2,
+      "unit": "unit",
       "location": "Server Room",
       "notes": "For server backup power"
     }
@@ -110,3 +164,39 @@ GET {{baseUrl}}/inventory/transactions/1
 
 ### Get Transaction by Reference
 GET {{baseUrl}}/inventory/transactions/reference/PO%2F2024%2F001
+
+### ==================== Items Management ====================
+
+### Update Item
+PUT {{baseUrl}}/inventory/items/1
+Content-Type: application/json
+
+{
+  "name": "Updated Chair Name",
+  "category": "CHAIR",
+  "location": "Meeting Room B",
+  "unit": "buah"
+}
+
+### Delete Item
+DELETE {{baseUrl}}/inventory/items/1
+
+### ==================== Transactions Management ====================
+
+### Update Transaction
+PUT {{baseUrl}}/inventory/transactions/1
+Content-Type: application/json
+
+{
+  "reference": "PO/2024/001-REV",
+  "notes": "Updated delivery notes"
+}
+
+### Delete Transaction
+DELETE {{baseUrl}}/inventory/transactions/1
+
+### Note on Updates and Deletes:
+# - Items cannot be deleted if they have existing transactions
+# - Deleting a transaction will automatically:
+#   1. Reverse the quantity changes (add back for OUT, subtract for IN)
+#   2. Delete associated transactionItems through cascade

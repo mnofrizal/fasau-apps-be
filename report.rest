@@ -9,7 +9,7 @@ GET {{baseUrl}}/report
 ### Get Report by ID
 GET {{baseUrl}}/report/16
 
-### Create TEMUAN Report (Auto-escalates to Task)
+### Create TEMUAN Report with Materials (Auto-escalates to Task)
 POST {{baseUrl}}/report
 Content-Type: application/json
 
@@ -20,6 +20,23 @@ Content-Type: application/json
     "phone": "+62812-3456-7891",
     "category": "PM",
     "subCategory": "TEMUAN",
+    "tindakan":"Perbaikan",
+    "material": [
+        {
+            "name": "Water Sealant",
+            "category": "BUILDING",
+            "quantity": 2,
+            "unit": "kaleng",
+            "location": "Storage Room A"
+        },
+        {
+            "name": "Pipe Joint",
+            "category": "PLUMBING",
+            "quantity": 4,
+            "unit": "pcs",
+            "location": "Storage Room B"
+        }
+    ],
     "changedBy": "John Engineer"
 }
 
@@ -50,13 +67,22 @@ Content-Type: application/json
     "changedBy": "System"
 }
 
-### Update Report to TEMUAN (Will Auto-escalate)
+### Update Report to TEMUAN with Materials (Will Auto-escalate)
 PUT {{baseUrl}}/report/1
 Content-Type: application/json
 
 {
     "subCategory": "TEMUAN",
     "description": "Upon inspection, found critical issue requiring immediate attention",
+    "material": [
+        {
+            "name": "Replacement Chair",
+            "category": "FURNITURE",
+            "quantity": 2,
+            "unit": "unit",
+            "location": "Meeting Room B"
+        }
+    ],
     "changedBy": "Jane Supervisor"
 }
 
