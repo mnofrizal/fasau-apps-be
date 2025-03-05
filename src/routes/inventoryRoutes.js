@@ -32,6 +32,9 @@ router.get(
   inventoryController.getTransactionByReference
 );
 
+// Download transaction as PDF
+router.get("/transactions/:id/pdf", inventoryController.downloadTransactionPDF);
+
 // Update item
 router.put("/items/:id", inventoryController.updateItem);
 

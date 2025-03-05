@@ -254,6 +254,46 @@ const inventoryController = {
       responseHandler.errorResponse(res, 500, error.message);
     }
   },
+  /**
+   * Download transaction as PDF (Berita Acara)
+   * GET /api/v1/inventory/transactions/:id/pdf
+   */
+  downloadTransactionPDF: async (req, res) => {
+    try {
+      const transaction = await inventoryService.getTransactionById(
+        parseInt(req.params.id)
+      );
+
+      if (!transaction) {
+        return responseHandler.notFoundResponse(res, "Transaction not found");
+      }
+
+      if (transaction.type !== "OUT") {
+        return responseHandler.errorResponse(
+          res,
+          400,
+          "PDF generation only available for OUT transactions"
+        );
+      }
+
+      const PDFGenerator = require("../utils/pdfGenerator");
+      const generator = new PDFGenerator();
+
+      // Set response headers for PDF download
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename=berita-acara-keluar-barang-${transaction.reference}.pdf`
+      );
+
+      // Generate and pipe the PDF to response
+      const doc = generator.generateBeritaAcara(transaction);
+      doc.pipe(res);
+      doc.end();
+    } catch (error) {
+      responseHandler.errorResponse(res, 500, error.message);
+    }
+  },
 };
 
 module.exports = inventoryController;

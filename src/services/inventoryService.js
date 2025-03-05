@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const socketUtils = require("../utils/socket");
+const PDFDocument = require("pdfkit");
 const prisma = new PrismaClient();
 
 const inventoryService = {
@@ -44,7 +45,7 @@ const inventoryService = {
    * @returns {Promise<Object>} Created transaction with items
    */
   recordBatchMovement: async (movementData) => {
-    const { type, reference, notes, createdBy, items } = movementData;
+    const { type, reference, notes, createdBy, to, items } = movementData;
 
     return await prisma.$transaction(async (tx) => {
       // Create the transaction record
@@ -54,6 +55,8 @@ const inventoryService = {
           reference,
           notes,
           createdBy,
+          status: type === "IN" ? "RECEIVED" : "DELIVERING",
+          to: type === "OUT" ? to : null,
         },
       });
 
@@ -164,11 +167,6 @@ const inventoryService = {
   },
 
   /**
-   * Get transaction by reference number
-   * @param {string} reference - Transaction reference number
-   * @returns {Promise<Object>} Transaction details with items
-   */
-  /**
    * Get items by category
    * @param {string} category - Category name
    * @returns {Promise<Array>} Array of items in the specified category
@@ -182,6 +180,11 @@ const inventoryService = {
     });
   },
 
+  /**
+   * Get transaction by reference number
+   * @param {string} reference - Transaction reference number
+   * @returns {Promise<Object>} Transaction details with items
+   */
   getTransactionByReference: async (reference) => {
     return await prisma.inventoryTransaction.findFirst({
       where: { reference },
@@ -304,11 +307,38 @@ const inventoryService = {
    * @returns {Promise<Object>} Updated transaction
    */
   updateTransaction: async (id, data) => {
+    // Get current transaction to verify status update
+    const currentTransaction = await prisma.inventoryTransaction.findUnique({
+      where: { id },
+    });
+
+    if (!currentTransaction) {
+      throw new Error("Transaction not found");
+    }
+
+    // Validate status transitions
+    if (data.status) {
+      const validTransitions = {
+        DELIVERING: ["DELIVERED"],
+        DELIVERED: [],
+        RECEIVED: [],
+      };
+
+      const currentStatus = currentTransaction.status;
+      if (!validTransitions[currentStatus]?.includes(data.status)) {
+        throw new Error(
+          `Invalid status transition from ${currentStatus} to ${data.status}`
+        );
+      }
+    }
+
     return await prisma.inventoryTransaction.update({
       where: { id },
       data: {
         reference: data.reference,
         notes: data.notes,
+        ...(data.status && { status: data.status }),
+        ...(data.to && { to: data.to }),
       },
       include: {
         items: {

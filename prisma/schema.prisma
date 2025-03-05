@@ -16,6 +16,12 @@ enum TransactionType {
   OUT
 }
 
+enum TransactionStatus {
+  DELIVERING
+  RECEIVED
+  DELIVERED
+}
+
 enum ItemUnit {
   pcs
   box
@@ -54,12 +60,14 @@ model InventoryItem {
 }
 
 model InventoryTransaction {
-  id        Int             @id @default(autoincrement())
+  id        Int               @id @default(autoincrement())
   type      TransactionType
   reference String // PO number or reference number
-  notes     String?         @db.Text
+  notes     String?           @db.Text
   createdBy String
-  createdAt DateTime        @default(now())
+  createdAt DateTime          @default(now())
+  status    TransactionStatus @default(DELIVERING)
+  to        String?
 
   // Relations
   items TransactionItem[]

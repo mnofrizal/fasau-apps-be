@@ -11,8 +11,8 @@ POST {{baseUrl}}/inventory/items
 Content-Type: application/json
 
 {
-  "name": "New Office Chair1",
-  "unit": "pcs"
+  "name": "New Office Chair1"
+
 }
 # Notes for Create Item:
 # - Item name must be unique, duplicate names will be rejected
@@ -100,20 +100,15 @@ Content-Type: application/json
   "reference": "OUT/IT/2024/001",
   "notes": "IT equipment assignment",
   "createdBy": "Jane Smith",
+  "to": "IT Department",
   "items": [
     {
-      "name": "Laptop Dell Latitude 5420",
-      "category": "COMPUTER",
-      "quantity": 1,
-      "unit": "unit",
-      "notes": "Laptop untuk developer baru"
-    },
-    {
-      "name": "Monitor Dell P2419H 24-inch",
-      "category": "ELECTRONIC",
-      "quantity": 2,
-      "unit": "unit",
-      "notes": "Monitor untuk setup dual screen"
+      "name": "New Office Chair",
+      "category": "CHAIR",
+      "quantity": 3,
+      "location": "Storage Room B",
+      "unit": "pcs",
+      "notes": "Kursi ergonomis untuk kantor"
     }
   ]
 }
@@ -194,11 +189,35 @@ Content-Type: application/json
 
 {
   "reference": "PO/2024/001-REV",
-  "notes": "Updated delivery notes"
+  "notes": "Updated delivery notes",
+  "to": "IT",
+  "status": "DELIVERED"
 }
+
+### Example - Update Transaction Status to Delivered
+PUT {{baseUrl}}/inventory/transactions/1
+Content-Type: application/json
+
+{
+  "status": "DELIVERED"
+}
+# Notes on Transaction Status:
+# - For IN transactions:
+#   * Default status is RECEIVED (final status)
+# - For OUT transactions:
+#   * Default status is DELIVERING
+#   * Can be updated to DELIVERED
+#   * Once DELIVERED, cannot be changed
+# Valid status transitions:
+# DELIVERING -> DELIVERED
+# RECEIVED -> (no transitions allowed)
+# DELIVERED -> (no transitions allowed)
 
 ### Delete Transaction
 DELETE {{baseUrl}}/inventory/transactions/1
+
+### Download Transaction PDF (Berita Acara Keluar Barang)
+GET {{baseUrl}}/inventory/transactions/1/pdf
 
 ### Note on Updates and Deletes:
 # - Items cannot be deleted if they have existing transactions
