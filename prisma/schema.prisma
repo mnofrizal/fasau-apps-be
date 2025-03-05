@@ -32,6 +32,9 @@ enum ItemUnit {
   galon
   biji
   kaleng
+  sak
+  karung
+  m3
 }
 
 model InventoryItem {
