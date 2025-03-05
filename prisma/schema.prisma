@@ -32,7 +32,7 @@ enum ItemUnit {
   galon
   biji
   kaleng
-  sak
+  zak
   karung
   m3
 }
