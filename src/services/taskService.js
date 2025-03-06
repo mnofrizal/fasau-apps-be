@@ -24,6 +24,7 @@ const taskService = {
             category: true,
             subCategory: true,
             evidence: true,
+            evidenceDone: true,
             tindakan: true,
           },
         },
@@ -60,6 +61,7 @@ const taskService = {
             category: true,
             subCategory: true,
             evidence: true,
+            evidenceDone: true,
             tindakan: true,
           },
         },
@@ -181,17 +183,22 @@ const taskService = {
     const isStatusChanged =
       taskData.status && taskData.status !== existingTask.status;
 
+    // Extract evidenceDone and notes from taskData to prevent Prisma error
+    const { evidenceDone, notes, ...taskUpdateData } = taskData;
+
     // Update the task
-    const task = await prisma.task.update({
+    let task = await prisma.task.update({
       where: { id },
       data: {
-        ...taskData,
+        ...taskUpdateData,
         // If status is changing, create a status history entry
         ...(isStatusChanged && {
           statusHistory: {
             create: {
-              status: taskData.status,
-              notes: `Status changed from ${existingTask.status} to ${taskData.status}`,
+              status: taskUpdateData.status,
+              notes:
+                notes ||
+                `Status changed from ${existingTask.status} to ${taskUpdateData.status}`,
               changedBy: changedBy,
             },
           },
@@ -212,35 +219,62 @@ const taskService = {
     socketUtils.getIO().emit("task_updated"); // Emit event to refresh tasks after update
 
     // Sync status with associated report if status changed to COMPLETED or CANCEL
-    if (
-      existingTask?.taskReportId &&
-      isStatusChanged &&
-      (taskData.status === "COMPLETED" || taskData.status === "CANCEL")
-    ) {
+    if (existingTask?.taskReportId) {
       try {
-        // Update the associated report with the same status and create a status history entry
-        await prisma.taskReport.update({
-          where: { id: existingTask.taskReportId },
-          data: {
-            status: taskData.status,
-            statusHistory: {
-              create: {
-                status: taskData.status,
-                notes: `Status updated from task: ${task.title}`,
-                changedBy: changedBy,
+        const reportUpdateData = {};
+
+        // Always update status if it changed to COMPLETED or CANCEL
+        if (
+          isStatusChanged &&
+          (taskUpdateData.status === "COMPLETED" ||
+            taskUpdateData.status === "CANCEL")
+        ) {
+          reportUpdateData.status = taskUpdateData.status;
+        }
+
+        // Add evidenceDone if provided and task is completed
+        if (evidenceDone && taskUpdateData.status === "COMPLETED") {
+          reportUpdateData.evidenceDone = evidenceDone;
+          console.log(`Setting evidenceDone for report: ${evidenceDone}`);
+        }
+
+        // Only proceed if we have updates to make
+        if (Object.keys(reportUpdateData).length > 0) {
+          // Add status history entry
+          reportUpdateData.statusHistory = {
+            create: {
+              status: taskUpdateData.status,
+              notes: notes || `Status updated from task: ${task.title}`,
+              changedBy: changedBy,
+            },
+          };
+
+          // Update the report
+          const updatedReport = await prisma.taskReport.update({
+            where: { id: existingTask.taskReportId },
+            data: reportUpdateData,
+          });
+
+          console.log(`Updated associated report:`, updatedReport);
+          socketUtils.getIO().emit("report_created"); // Emit event to refresh reports
+
+          // Refresh the task object to include the updated report data
+          task = await prisma.task.findUnique({
+            where: { id },
+            include: {
+              taskReport: true,
+              statusHistory: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 5,
               },
             },
-          },
-        });
-
-        console.log(
-          `Updated associated report (ID: ${existingTask.taskReportId}) status to ${taskData.status}`
-        );
-        socketUtils.getIO().emit("report_created"); // Emit event to refresh reports
+          });
+          console.log(`Refreshed task with updated report:`, task);
+        }
       } catch (error) {
-        console.error(
-          `Error updating associated report status: ${error.message}`
-        );
+        console.error(`Error updating associated report: ${error.message}`);
         // Don't throw error, as task is already updated
       }
     }

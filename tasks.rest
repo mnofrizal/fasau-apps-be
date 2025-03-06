@@ -7,7 +7,7 @@
 GET {{baseUrl}}/tasks
 
 ### Get Task by ID
-GET {{baseUrl}}/tasks/6
+GET {{baseUrl}}/tasks/20
 
 ### Create MEMO Task
 POST {{baseUrl}}/tasks
@@ -68,14 +68,15 @@ Content-Type: application/json
 }
 
 ### Update Task with Changed By
-PUT {{baseUrl}}/tasks/1
+PUT {{baseUrl}}/tasks/22
 Content-Type: application/json
 
 {
     "title": "Updated Task Title",
     "status": "COMPLETED",
     "keterangan": "Task completed with modified requirements",
-    "changedBy": "John Smith"
+    "changedBy": "John Smith",
+  "evidenceDone": "http://example.com/completion-evidence.jpg"
 }
 
 ### Update Task Status Only
@@ -84,7 +85,9 @@ Content-Type: application/json
 
 {
     "status": "COMPLETED",
-    "changedBy": "Jane Doe"
+    "changedBy": "Jane Doe",
+     "evidenceDone": "http://example.com/completion-evidence.jpg",
+     "notes":"pekerjaan sudah selesai"
 }
 
 

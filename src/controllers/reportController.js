@@ -60,6 +60,7 @@ const reportController = {
     try {
       const {
         evidence,
+        evidenceDone,
         description,
         pelapor,
         phone,
@@ -138,6 +139,7 @@ const reportController = {
       const report = await reportService.createReport(
         {
           evidence,
+          evidenceDone,
           description,
           pelapor,
           phone,
@@ -164,6 +166,7 @@ const reportController = {
       const { id } = req.params;
       const {
         evidence,
+        evidenceDone,
         description,
         pelapor,
         phone,
@@ -235,6 +238,7 @@ const reportController = {
         parseInt(id),
         {
           evidence,
+          evidenceDone,
           description,
           pelapor,
           phone,

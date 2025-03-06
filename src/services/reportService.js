@@ -438,6 +438,7 @@ const reportService = {
           { description: { contains: query, mode: "insensitive" } },
           { pelapor: { contains: query, mode: "insensitive" } },
           { evidence: { contains: query, mode: "insensitive" } },
+          { evidenceDone: { contains: query, mode: "insensitive" } },
         ],
       },
       orderBy: {

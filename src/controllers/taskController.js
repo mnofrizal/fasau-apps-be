@@ -98,7 +98,15 @@ const taskController = {
   updateTask: async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, category, status, keterangan, changedBy } = req.body;
+      const {
+        title,
+        category,
+        status,
+        keterangan,
+        changedBy,
+        evidenceDone,
+        notes,
+      } = req.body;
 
       // Validate category if provided
       if (category && !VALID_CATEGORIES.includes(category)) {
@@ -125,6 +133,8 @@ const taskController = {
           category,
           status,
           keterangan,
+          evidenceDone,
+          notes,
         },
         changedBy || "System"
       );
