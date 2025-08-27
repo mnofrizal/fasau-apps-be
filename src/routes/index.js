@@ -6,6 +6,7 @@ const reportRoutes = require("./reportRoutes");
 const whatsappConfigRoutes = require("./whatsappConfigRoutes");
 const teamAssignmentRoutes = require("./teamAssignmentRoutes");
 const inventoryRoutes = require("./inventoryRoutes");
+const pmRoutes = require("./pmRoutes");
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.use("/report", reportRoutes);
 router.use("/whatsapp-config", whatsappConfigRoutes);
 router.use("/team-assignments", teamAssignmentRoutes);
 router.use("/inventory", inventoryRoutes);
+router.use("/pm", pmRoutes);
 
 // Health check route
 router.get("/health", (req, res) => {

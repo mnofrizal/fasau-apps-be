@@ -1,0 +1,61 @@
+### Send Today's PM Schedule Manually (Full - Individual + Group)
+POST http://localhost:3900/api/v1/pm/send-today
+Content-Type: application/json
+
+{
+  "groupOnly": false
+}
+
+###
+
+### Send Today's PM Schedule Manually (Group Only)
+POST http://localhost:3900/api/v1/pm/send-today
+Content-Type: application/json
+
+{
+  "groupOnly": true
+}
+
+###
+
+### Send PM Schedule for Specific Date (Full - Individual + Group)
+POST http://localhost:3900/api/v1/pm/send-by-date
+Content-Type: application/json
+
+{
+  "date": "2025-08-27",
+  "groupOnly": false
+}
+
+###
+
+### Send PM Schedule for Specific Date (Group Only)
+POST http://localhost:3900/api/v1/pm/send-by-date
+Content-Type: application/json
+
+{
+  "date": "2025-08-27",
+  "groupOnly": true
+}
+
+###
+
+### Get Today's PM Assignments (without sending messages)
+GET http://localhost:3900/api/v1/pm/assignments/today
+
+###
+
+### Get PM Assignments for Specific Date (without sending messages)
+GET http://localhost:3900/api/v1/pm/assignments/2025-08-27
+
+###
+
+### Get PM Assignments for Monday (should have assignments)
+GET http://localhost:3900/api/v1/pm/assignments/2025-08-25
+
+###
+
+### Get PM Assignments for Weekend (should return no assignments)
+GET http://localhost:3900/api/v1/pm/assignments/2025-08-24
+
+###
